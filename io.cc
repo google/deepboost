@@ -28,8 +28,9 @@ DEFINE_string(data_set, "",
 DEFINE_string(data_filename, "",
               "Filename containing data. Required: data_filename not empty.");
 DEFINE_int32(num_folds, -1,
-             "(num_folds - 1)/num_folds of data used for training, 1/num_folds "
-             "of data used for testing. Required: num_folds >= 2.");
+             "(num_folds - 2)/num_folds of data used for training, 1/num_folds "
+             "of data used for cross-validation, 1/num_folds of data used for "
+             "testing. Required: num_folds >= 2.");
 DEFINE_int32(fold_to_cv, -1,
              "Zero-indexed fold used for cross-validation. Required: "
              "0 <= fold_to_cv <= num_folds - 1.");
