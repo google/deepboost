@@ -44,7 +44,7 @@ void ValidateFlags() {
         FLAGS_data_set == "ocr17-princeton" ||
         FLAGS_data_set == "ocr49-princeton" || FLAGS_data_set == "mnist17" ||
         FLAGS_data_set == "mnist49" || FLAGS_data_set == "pima");
-  CHECK_GE(FLAGS_num_folds, 2);
+  CHECK_GE(FLAGS_num_folds, 3);
   CHECK_GE(FLAGS_fold_to_cv, 0);
   CHECK_GE(FLAGS_fold_to_test, 0);
   CHECK_LE(FLAGS_fold_to_cv, FLAGS_num_folds - 1);
