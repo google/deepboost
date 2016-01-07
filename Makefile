@@ -11,7 +11,7 @@
 #   LIB_DIR/include/gtest contains Google Test include files
 #   LIB_DIR/src contains Google Test source files
 #   LIB_DIR/lib contains libgflags* and libglog* library files.
-LIB_DIR = /home/usyed/googleopensource
+LIB_DIR = /usr/local/google/home/usyed/googleopensource
 
 # Where to find user code.
 USER_DIR = .
