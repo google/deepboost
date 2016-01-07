@@ -18,6 +18,7 @@ limitations under the License.
 
 #include <algorithm>
 #include <fstream>
+#include <random>
 
 #include "gflags/gflags.h"
 #include "glog/logging.h"
@@ -39,6 +40,10 @@ DEFINE_int32(fold_to_test, -1,
              "<= num_folds - 1.");
 DEFINE_double(noise_prob, 0,
               "Noise probability. Required: 0 <= noise_prob <= 1.");
+
+static std::mt19937 rng;
+
+void SetSeed(uint_fast32_t seed) { rng.seed(seed); }
 
 void SplitString(const string &text, char sep, vector<string>* tokens) {
   int start = 0, end = 0;
@@ -309,11 +314,12 @@ void ReadData(vector<Example>* train_examples,
     }
     if (keep_example) examples.push_back(example);
   }
-  std::random_shuffle(examples.begin(), examples.end());
+  std::shuffle(examples.begin(), examples.end(), rng);
+  std::uniform_real_distribution<double> dist;
   int fold = 0;
   // TODO(usyed): Two loops is inefficient
   for (Example& example : examples) {
-    double r = ((double) rand() / (RAND_MAX));
+    double r = dist(rng);
     if (r < FLAGS_noise_prob) {
       example.label = -example.label;
     }

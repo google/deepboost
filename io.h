@@ -27,6 +27,8 @@ using std::string;
 // delimiters are ignored.
 void SplitString(const string &text, char sep, vector<string>* tokens);
 
+void SetSeed(uint_fast32_t seed);
+
 // The following functions each parse one line of a data set.
 
 bool ParseLineBreastCancer(const string& line, Example* example);

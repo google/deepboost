@@ -58,7 +58,7 @@ void ValidateFlags() {
 int main(int argc, char** argv) {
   ValidateFlags();
 
-  srand(FLAGS_seed);
+  SetSeed(FLAGS_seed);
 
   vector<Example> train_examples, cv_examples, test_examples;
   ReadData(&train_examples, &cv_examples, &test_examples);

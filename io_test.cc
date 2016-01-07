@@ -536,7 +536,7 @@ TEST_F(IoTest, ReadDataTest) {
   FLAGS_num_folds = 4;
   FLAGS_fold_to_cv = 1;
   FLAGS_fold_to_test = 0;
-  srand(123456);
+  SetSeed(123456);
 
   vector<Example> train_examples, cv_examples, test_examples;
   ReadData(&train_examples, &cv_examples, &test_examples);
@@ -554,7 +554,7 @@ TEST_F(IoTest, ReadDataTestWithNoise) {
   FLAGS_fold_to_cv = 1;
   FLAGS_fold_to_test = 0;
   FLAGS_noise_prob = 0;
-  srand(123456);
+  SetSeed(123456);
 
   vector<Example> train_examples, cv_examples, test_examples;
   ReadData(&train_examples, &cv_examples, &test_examples);

@@ -21,7 +21,7 @@ CPPFLAGS += -isystem $(LIB_DIR)/include
 
 # Flags passed to the C++ compiler. Add -O3 for the highest optimization level.
 # Add -ggdb for GDB debugging info.
-CXXFLAGS += -Wall -Wextra -pthread -std=c++0x
+CXXFLAGS += -Wall -Wextra -pthread -std=c++11
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
