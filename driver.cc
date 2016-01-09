@@ -38,12 +38,11 @@ void ValidateFlags() {
   CHECK_GE(FLAGS_tree_depth, 0);
   CHECK_GE(FLAGS_num_iter, 1);
   CHECK(!FLAGS_data_filename.empty());
-  CHECK(FLAGS_data_set == "breastcancer" || FLAGS_data_set == "ion" ||
-        FLAGS_data_set == "ocr17" || FLAGS_data_set == "ocr49" ||
-        FLAGS_data_set == "splice" || FLAGS_data_set == "german" ||
-        FLAGS_data_set == "ocr17-princeton" ||
-        FLAGS_data_set == "ocr49-princeton" || FLAGS_data_set == "mnist17" ||
-        FLAGS_data_set == "mnist49" || FLAGS_data_set == "pima");
+  CHECK(FLAGS_dataset == "breastcancer" || FLAGS_dataset == "ionosphere" ||
+        FLAGS_dataset == "ocr17-mnist" || FLAGS_dataset == "ocr49-mnist" ||
+        FLAGS_dataset == "splice" || FLAGS_dataset == "german" ||
+        FLAGS_dataset == "ocr17" || FLAGS_dataset == "ocr49" ||
+        FLAGS_dataset == "diabetes");
   CHECK_GE(FLAGS_num_folds, 3);
   CHECK_GE(FLAGS_fold_to_cv, 0);
   CHECK_GE(FLAGS_fold_to_test, 0);

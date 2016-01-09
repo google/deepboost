@@ -24,8 +24,8 @@ limitations under the License.
 #include "glog/logging.h"
 
 DEFINE_string(data_set, "",
-              "Name of data set. Required: One of breastcancer, ion, ocr17, "
-              "ocr49");
+              "Name of data set. Required: One of breastcancer, ionosphere, "
+              "ocr17, ocr49, ocr17-mnist, ocr49-mnist, diabetes, german.");
 DEFINE_string(data_filename, "",
               "Filename containing data. Required: data_filename not empty.");
 DEFINE_int32(num_folds, -1,
@@ -212,48 +212,6 @@ bool ParseLineOcr49Princeton(const string& line, Example* example) {
   return true;
 }
 
-bool ParseLineMnist17(const string& line, Example* example) {
-  example->values.clear();
-  vector<string> values;
-  SplitString(line, ',', &values);
-  for (int i = 0; i < values.size(); ++i) {
-    if (i == 0) {
-      if (values[i] == "1") {  // Digit 1
-        example->label = -1;
-      } else if (values[i] == "7") {  // Digit 7
-        example->label = +1;
-      } else {
-        return false;
-      }
-    } else {
-      float value = atof(values[i].c_str());
-      example->values.push_back(value);
-    }
-  }
-  return true;
-}
-
-bool ParseLineMnist49(const string& line, Example* example) {
-  example->values.clear();
-  vector<string> values;
-  SplitString(line, ',', &values);
-  for (int i = 0; i < values.size(); ++i) {
-    if (i == 0) {
-      if (values[i] == "4") {  // Digit 4
-        example->label = -1;
-      } else if (values[i] == "9") {  // Digit 9
-        example->label = +1;
-      } else {
-        return false;
-      }
-    } else {
-      float value = atof(values[i].c_str());
-      example->values.push_back(value);
-    }
-  }
-  return true;
-}
-
 bool ParseLinePima(const string& line, Example* example) {
   example->values.clear();
   vector<string> values;
@@ -291,23 +249,19 @@ void ReadData(vector<Example>* train_examples,
     bool keep_example;
     if (FLAGS_data_set == "breastcancer") {
       keep_example = ParseLineBreastCancer(line, &example);
-    } else if (FLAGS_data_set == "ion") {
+    } else if (FLAGS_data_set == "ionosphere") {
       keep_example = ParseLineIon(line, &example);
     } else if (FLAGS_data_set == "german") {
       keep_example = ParseLineGerman(line, &example);
-    } else if (FLAGS_data_set == "ocr17") {
+    } else if (FLAGS_data_set == "ocr17-mnist") {
       keep_example = ParseLineOcr17(line, &example);
-    } else if (FLAGS_data_set == "ocr49") {
+    } else if (FLAGS_data_set == "ocr49-mnist") {
       keep_example = ParseLineOcr49(line, &example);
-    } else if (FLAGS_data_set == "ocr17-princeton") {
+    } else if (FLAGS_data_set == "ocr17") {
       keep_example = ParseLineOcr17Princeton(line, &example);
-    } else if (FLAGS_data_set == "ocr49-princeton") {
+    } else if (FLAGS_data_set == "ocr49") {
       keep_example = ParseLineOcr49Princeton(line, &example);
-    } else if (FLAGS_data_set == "mnist17") {
-      keep_example = ParseLineMnist17(line, &example);
-    } else if (FLAGS_data_set == "mnist49") {
-      keep_example = ParseLineMnist49(line, &example);
-    } else if (FLAGS_data_set == "pima") {
+    } else if (FLAGS_data_set == "diabetes") {
       keep_example = ParseLinePima(line, &example);
     } else {
       LOG(FATAL) << "Unknown data set: " << FLAGS_data_set;

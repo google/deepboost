@@ -45,10 +45,6 @@ bool ParseLineOcr49Princeton(const string& line, Example* example);
 
 bool ParseLineOcr17Princeton(const string& line, Example* example);
 
-bool ParseLineMnist49(const string& line, Example* example);
-
-bool ParseLineMnist17(const string& line, Example* example);
-
 bool ParseLinePima(const string& line, Example* example);
 
 // Read data set into training set, cross-validation set and test set.
