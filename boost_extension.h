@@ -10,7 +10,9 @@ Daniel Marcous, Yotam Sandbank
 
 // Train a deepboost model on the given examples, using
 // numIter iterations (which not necessarily means numIter trees) 
-void Train(vector<Example>& examples, Model* model, float numIter);
+void Train(vector<Example>& train_examples, vector<Example>& cv_examples,
+ vector<Example>& test_examples, Model* model, float tree_depth,
+ float num_iter, float beta, float lambda, char loss_type);
 
 
 // Classify examples using model
