@@ -77,6 +77,9 @@ tree_test : tree.o tree_test.o gtest_main.a
 boost.o : $(USER_DIR)/boost.cc $(USER_DIR)/boost.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/boost.cc
 
+boost_extension.o : $(USER_DIR)/boost_extension.cc $(USER_DIR)/boost_extension.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/boost_extension.cc
+	
 boost_test.o : $(USER_DIR)/boost_test.cc \
                      $(USER_DIR)/boost.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/boost_test.cc
