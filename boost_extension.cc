@@ -4,6 +4,7 @@ Daniel Marcous, Yotam Sandbank
 */
 
 #include "boost_extension.h"
+#include "boost.h"
 
 #include <float.h>
 #include <math.h>
@@ -47,15 +48,20 @@ void Train(vector<Example>& train_examples, vector<Example>& cv_examples,
 				   iter, test_error, cv_error, avg_tree_size, num_trees);
 		}
 	}
-		
 }
 
 
 // Classify examples using model
-void Predict(const vector<Example>& examples, const Model& model, vector<Label>& labels);
+void Predict(const vector<Example>& examples, const Model& model, vector<Label>& labels){
+	for (unsigned i=0; i<examples.size(); i++){	
+		labels[i] = ClassifyExample(examples[i], model);
+    }
+}
 
 
 // Compute the error of model on examples. Also compute the number of trees in
 // model and their average size.
 void EvaluateModel(const vector<Example>& examples, const Model& model,
-                   float* error, float* avg_tree_size, int* num_trees);
+                   float* error, float* avg_tree_size, int* num_trees){
+	EvaluateModel(examples, model, error, avg_tree_size, num_trees);
+}
