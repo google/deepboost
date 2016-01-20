@@ -11,11 +11,11 @@ Daniel Marcous, Yotam Sandbank
 // Train a deepboost model on the given examples, using
 // numIter iterations (which not necessarily means numIter trees) 
 void Train(vector<Example>& train_examples, Model* model, float tree_depth,
- float num_iter, float beta, float lambda, char loss_type, bool verboose);
+ float num_iter, float beta, float lambda, char loss_type, bool verbose);
 
 
 // Classify examples using model
-void Predict(const vector<Example>& examples, const Model& model, vector<Label>& labels);
+vector<Label> Predict(const vector<Example>& examples, const Model& model);
 
 
 // Compute the error of model on examples. Also compute the number of trees in

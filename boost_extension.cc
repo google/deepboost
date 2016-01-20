@@ -21,7 +21,7 @@ DECLARE_string(loss_type);
 // Train a deepboost model on the given examples, using
 // numIter iterations (which not necessarily means numIter trees) 
 void Train(vector<Example>& train_examples, Model* model, int tree_depth,
- int num_iter, float beta, float lambda, char loss_type, bool verboose) {
+ int num_iter, float beta, float lambda, char loss_type, bool verbose) {
 	
 	// Set flags
 	flags_tree_depth = tree_depth;
@@ -35,7 +35,7 @@ void Train(vector<Example>& train_examples, Model* model, int tree_depth,
 	// Train the model
 	for (int i = 1; i <= num_iter; ++i) {
 		AddTreeToModel(train_examples, &model);
-		if (verboose) {
+		if (verbose) {
 			float error, avg_tree_size;
 			int num_trees;
 			EvaluateModel(train_examples, model, &error, &avg_tree_size,
@@ -49,10 +49,14 @@ void Train(vector<Example>& train_examples, Model* model, int tree_depth,
 
 
 // Classify examples using model
-void Predict(const vector<Example>& examples, const Model& model, vector<Label>& labels){
+vector<Label> Predict(const vector<Example>& examples, const Model& model){
+	//TODO::initiate labels
+	vector<Label> labels;
+    labels.resize(examples.size(), 0);
 	for (unsigned i=0; i<examples.size(); i++){	
 		labels[i] = ClassifyExample(examples[i], model);
     }
+	return labels;
 }
 
 
