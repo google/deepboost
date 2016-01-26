@@ -21,7 +21,7 @@ limitations under the License.
 #include "types.h"
 
 DECLARE_int32(tree_depth);
-DECLARE_string(data_set);
+DECLARE_string(dataset);
 DECLARE_string(data_filename);
 DECLARE_int32(num_folds);
 DECLARE_int32(fold_to_cv);
