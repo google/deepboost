@@ -1,0 +1,6 @@
+# google libs
+LIB_DIR = ../../../googlecdevtools
+PKG_CPPFLAGS =  -I. -I$(LIB_DIR)/include
+PKG_LIBS = -lgflags -lglog
+
+CXX_STD = CXX11

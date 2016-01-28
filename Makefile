@@ -15,7 +15,7 @@
 LIB_DIR = ../googlecdevtools
 
 # Where to find user code.
-USER_DIR = .
+USER_DIR = ./src
 
 # Flags passed to the preprocessor.
 CPPFLAGS += -isystem $(LIB_DIR)/include
@@ -36,9 +36,9 @@ GTEST_HEADERS = $(LIB_DIR)/include/gtest/*.h \
 # House-keeping build targets.
 
 test: $(TESTS)
-	./tree_test
-	./io_test
-	./boost_test
+	$(USER_DIR)/tree_test
+	$(USER_DIR)/io_test
+	$(USER_DIR)/boost_test
 clean :
 	rm -f $(TESTS) gtest_main.a driver *.o
 
@@ -66,7 +66,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 # Builds tests.  A test should link with gtest_main.a.
 
 tree.o : $(USER_DIR)/tree.cc $(USER_DIR)/tree.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/tree.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/tree.cc
 
 tree_test.o : $(USER_DIR)/tree_test.cc \
                      $(USER_DIR)/tree.h $(GTEST_HEADERS)

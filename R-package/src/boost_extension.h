@@ -6,10 +6,10 @@ Daniel Marcous, Yotam Sandbank
 #ifndef BOOST_EXTENSION_H_
 #define BOOST_EXTENSION_H_
 
-#include "types.h"
+#include "../../src/types.h"
 
 // Train a deepboost model on the given examples, using
-// numIter iterations (which not necessarily means numIter trees) 
+// numIter iterations (which not necessarily means numIter trees)
 void Train(vector<Example>& train_examples, Model* model, float tree_depth,
  float num_iter, float beta, float lambda, char loss_type, bool verbose);
 
