@@ -3,7 +3,7 @@ Written by:
 Daniel Marcous, Yotam Sandbank
 */
 
-#include "boost_extension.h"
+#include "deepboost_C.h"
 #include "../../src/boost.h"
 
 #include <float.h>

@@ -3,8 +3,8 @@ Written by:
 Daniel Marcous, Yotam Sandbank
 */
 
-#ifndef BOOST_EXTENSION_H_
-#define BOOST_EXTENSION_H_
+#ifndef DEEPBOOST_C_H_
+#define DEEPBOOST_C_H_
 
 #include "../../src/types.h"
 
@@ -23,4 +23,4 @@ vector<Label> Predict(const vector<Example>& examples, const Model& model);
 void Evaluate(const vector<Example>& examples, const Model& model,
                    float* error, float* avg_tree_size, int* num_trees);
 
-#endif  // BOOST_EXTENSION_H_
+#endif  // DEEPBOOST_C_H_
