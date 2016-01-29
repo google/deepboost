@@ -23,7 +23,7 @@ limitations under the License.
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
-DEFINE_string(data_set, "",
+DEFINE_string(dataset, "",
               "Name of data set. Required: One of breastcancer, ionosphere, "
               "ocr17, ocr49, ocr17-mnist, ocr49-mnist, diabetes, german.");
 DEFINE_string(data_filename, "",
@@ -247,24 +247,24 @@ void ReadData(vector<Example>* train_examples,
   while (!std::getline(file, line).eof()) {
     Example example;
     bool keep_example;
-    if (FLAGS_data_set == "breastcancer") {
+    if (FLAGS_dataset == "breastcancer") {
       keep_example = ParseLineBreastCancer(line, &example);
-    } else if (FLAGS_data_set == "ionosphere") {
+    } else if (FLAGS_dataset == "ionosphere") {
       keep_example = ParseLineIon(line, &example);
-    } else if (FLAGS_data_set == "german") {
+    } else if (FLAGS_dataset == "german") {
       keep_example = ParseLineGerman(line, &example);
-    } else if (FLAGS_data_set == "ocr17-mnist") {
+    } else if (FLAGS_dataset == "ocr17-mnist") {
       keep_example = ParseLineOcr17(line, &example);
-    } else if (FLAGS_data_set == "ocr49-mnist") {
+    } else if (FLAGS_dataset == "ocr49-mnist") {
       keep_example = ParseLineOcr49(line, &example);
-    } else if (FLAGS_data_set == "ocr17") {
+    } else if (FLAGS_dataset == "ocr17") {
       keep_example = ParseLineOcr17Princeton(line, &example);
-    } else if (FLAGS_data_set == "ocr49") {
+    } else if (FLAGS_dataset == "ocr49") {
       keep_example = ParseLineOcr49Princeton(line, &example);
-    } else if (FLAGS_data_set == "diabetes") {
+    } else if (FLAGS_dataset == "diabetes") {
       keep_example = ParseLinePima(line, &example);
     } else {
-      LOG(FATAL) << "Unknown data set: " << FLAGS_data_set;
+      LOG(FATAL) << "Unknown data set: " << FLAGS_dataset;
     }
     if (keep_example) examples.push_back(example);
   }

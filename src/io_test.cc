@@ -20,7 +20,7 @@ limitations under the License.
 #include "gflags/gflags.h"
 #include "gtest/gtest.h"
 
-DECLARE_string(data_set);
+DECLARE_string(dataset);
 DECLARE_string(data_filename);
 DECLARE_int32(fold_to_cv);
 DECLARE_int32(fold_to_test);
@@ -250,7 +250,7 @@ TEST_F(IoTest, ParseLinePimaTest) {
 }
 
 TEST_F(IoTest, ReadDataTest) {
-  FLAGS_data_set = "breastcancer";
+  FLAGS_dataset = "breastcancer";
   FLAGS_data_filename = "./testdata/breast-cancer-wisconsin.data";
   FLAGS_num_folds = 4;
   FLAGS_fold_to_cv = 1;
@@ -267,7 +267,7 @@ TEST_F(IoTest, ReadDataTest) {
 }
 
 TEST_F(IoTest, ReadDataTestWithNoise) {
-  FLAGS_data_set = "breastcancer";
+  FLAGS_dataset = "breastcancer";
   FLAGS_data_filename = "./testdata/breast-cancer-wisconsin.data";
   FLAGS_num_folds = 4;
   FLAGS_fold_to_cv = 1;
