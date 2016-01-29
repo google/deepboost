@@ -38,7 +38,7 @@ void Train(vector<Example>& train_examples, Model* model, int tree_depth,
 		if (verbose) {
 			float error, avg_tree_size;
 			int num_trees;
-			EvaluateModel(train_examples, model, &error, &avg_tree_size,
+			EvaluateModel(train_examples, *model, &error, &avg_tree_size,
 						  &num_trees);
 			printf("Iteration: %d, error: %g, "
 				   "avg tree size: %g, num trees: %d\n",
