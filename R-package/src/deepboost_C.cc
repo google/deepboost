@@ -28,9 +28,9 @@ void Train(vector<Example>& train_examples, Model* model, int tree_depth,
   FLAGS_beta = beta;
   FLAGS_lambda = lambda;
 	if (loss_type == 'e') {
-	  FLAGS_loss_type = 'exponential';
+	  FLAGS_loss_type = "exponential";
 	} else if (loss_type == 'l') {
-	  FLAGS_loss_type = 'logistic';
+	  FLAGS_loss_type = "logistic";
 	}
 	// Train the model
 	for (int iter = 1; iter <= num_iter; ++iter) {

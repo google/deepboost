@@ -61,6 +61,6 @@ typedef vector<Node> Tree;
 
 // A model is a vector of (weight, tree) pairs, i.e., a weighted combination of
 // trees.
-typedef vector<pair<Weight, Tree>> Model;
+typedef vector<pair<Weight, Tree> > Model;
 
 #endif  // TYPES_H_
