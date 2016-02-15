@@ -8,9 +8,9 @@ Maintainer: Daniel Marcous <dmarcous@gmail.com>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
 LazyData: TRUE
-Depends:
-    R (>= 3.1)
-Imports:
-    Rcpp (>= 0.12.2)
+Depends: R (>= 3.1)
+Imports: Rcpp (>= 0.12.2)
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1
+NeedsCompilation: yes
+Packaged: 2016-02-15 22:23:07 UTC; dmarcous

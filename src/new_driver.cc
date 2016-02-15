@@ -26,7 +26,7 @@ DECLARE_int32(num_folds);
 DECLARE_int32(fold_to_cv);
 DECLARE_int32(fold_to_test);
 DECLARE_double(noise_prob);
-DEFINE_int32(seed, -1,
+DEFINE_int32(new_seed, -1,
              "Seed for random number generator. Required: seed >= 0.");
 
 
@@ -38,10 +38,10 @@ int main(int argc, char** argv) {
   FLAGS_num_folds = 5;
   FLAGS_fold_to_cv = 1;
   FLAGS_fold_to_test = 1;
-  FLAGS_seeSd = 1;
+  FLAGS_new_seed = 1;
   FLAGS_noise_prob = 0.1;
-  
-  SetSeed(FLAGS_seed);
+
+  SetSeed(FLAGS_new_seed);
 
   vector<Example> train_examples, cv_examples, test_examples;
   ReadData(&train_examples, &cv_examples, &test_examples);
@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
   float lambda = 0.5;
   char loss_type = 'e';
   bool verbose = 1;
-  Train(train_examples, &model, tree_depth, num_iter, beta, lambda, loss_type, verbose);
+  Train(&train_examples, &model, tree_depth, num_iter, beta, lambda, loss_type, verbose);
   float error, avg_tree_size;
   int num_trees;
   Evaluate(cv_examples, model, &error, &avg_tree_size, &num_trees);
