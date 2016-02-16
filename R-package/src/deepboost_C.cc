@@ -15,14 +15,7 @@ Daniel Marcous, Yotam Sandbank
 DECLARE_int32(tree_depth);
 DECLARE_double(beta);
 DECLARE_double(lambda);
-//DEFINE_double(beta, -1.0, "beta parameter for gradient.");
-//DEFINE_double(lambda, -1.0, "lambda parameter for gradient.");
-//DEFINE_int32(tree_depth, -1,
-//             "Maximum depth of each decision tree. The root node has depth 0. "
-//             "Required: tree_depth >= 0.");
 DECLARE_string(loss_type);
-//DEFINE_string(loss_type, "",
-//              "Loss type. Required: One of exponential, logistic.");
 
 // Train a deepboost model on the given examples, using
 // numIter iterations (which not necessarily means numIter trees)

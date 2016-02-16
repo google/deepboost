@@ -23,6 +23,22 @@ NumericVector Train_R(NumericVector x) {
   return x*2;
 }
 
-//predict
-//evaluate
-//print?
+//’ Predicts instances labels based on a deepboost model
+//’
+//’ @param x input character vector
+//’ @return characters in each element of the vector
+// [[Rcpp::export]]
+NumericVector Predict_R(NumericVector x) {
+
+  return x*2;
+}
+
+//’ Evaluates and prints statistics for a deepboost model
+//’
+//’ @param x input character vector
+//’ @return characters in each element of the vector
+// [[Rcpp::export]]
+NumericVector Evaluate_R(NumericVector x) {
+
+  return x*2;
+}

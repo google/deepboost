@@ -5,3 +5,11 @@ Train_R <- function(x) {
     .Call('deepboost_Train_R', PACKAGE = 'deepboost', x)
 }
 
+Predict_R <- function(x) {
+    .Call('deepboost_Predict_R', PACKAGE = 'deepboost', x)
+}
+
+Evaluate_R <- function(x) {
+    .Call('deepboost_Evaluate_R', PACKAGE = 'deepboost', x)
+}
+

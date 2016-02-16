@@ -1,12 +1,13 @@
 Package: deepboost
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Deepboosted tree model training and prediction based on -link- by Google
 Version: 0.1
 Date: 2016-01-28
 Author: Daniel Marcous & Yotam Sandbank
 Maintainer: Daniel Marcous <dmarcous@gmail.com>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Description: Creation of deep oosting models using deep decision trees (vs shallow trees)
+             using a specialised learned weighting function on trees based on their performance as well as their depth.
+License: Apache License, Version 2.0
 LazyData: TRUE
 Depends:
     R (>= 3.1)

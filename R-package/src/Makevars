@@ -1,14 +1,11 @@
 PKG_ROOT = ../../
-ROOT_SRC_DIR = $(PKG_ROOT)src/
-PKG_CPPFLAGS =  -I. -I../inst/include -I$(ROOT_SRC_DIR)
+PKG_CPPFLAGS =  -I. -I../inst/include -I$(PKG_ROOT)
 
 #glibs
-#ln -s ~/git/googlecdevtools/lib/ /usr/local/lib/gcodelib
 GFLAGS_LIB = -lgflags
 GLOG_LIB = -lglog
 
-#PKG_LIBS = -L$(LIB_DIR)/lib -lgflags -lglog
-PKG_LIBS = -L/usr/local/lib/gcodelib $(GFLAGS_LIB) $(GLOG_LIB)
+PKG_LIBS = $(GFLAGS_LIB) $(GLOG_LIB)
 
 PKG_CXXFLAGS = -std=c++0x
 CXX_STD = CXX11
