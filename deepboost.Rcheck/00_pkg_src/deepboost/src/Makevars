@@ -17,10 +17,10 @@ CXX_STD = CXX11
 
 OBJECTS = ./tree.o ./boost.o ./deepboost_C.o ./deepboost_R.o
 
-all : deepboost.so
-
-deepboost.so: $(OBJECTS)
-
+# all : deepboost.so
+#
+# deepboost.so: $(OBJECTS)
+#
 CXXFLAGS += -Wall -Wextra -pthread -std=c++11
 CXX=clang++
 
@@ -30,8 +30,8 @@ CXX=clang++
  boost.o : $(ORIG_SOURCES)boost.cc $(ORIG_SOURCES)boost.h
 	$(CXX) $(PKG_CPPFLAGS) $(CXXFLAGS) -c $(ORIG_SOURCES)boost.cc
 
- deepboost_C.o: deepboost_C.cc $(ORIG_SOURCES)types.h
-	$(CXX) $(PKG_CPPFLAGS) $(CXXFLAGS) -c deepboost_C.cc
+#  deepboost_C.o: deepboost_C.cc $(ORIG_SOURCES)types.h
+# 	$(CXX) $(PKG_CPPFLAGS) $(CXXFLAGS) -c deepboost_C.cc
 
-clean:
-		rm -rf *.o *.so $(PKG_ROOT)src/*.o
+# clean:
+# 		rm -rf *.o *.so $(PKG_ROOT)src/*.o
