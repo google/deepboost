@@ -4,7 +4,7 @@
 \alias{deepboost.print}
 \title{Evaluates and prints statistics for a deepboost model}
 \usage{
-deepboost.print(object, controls, weights = NULL, fitmem = NULL, ...)
+deepboost.print(object)
 }
 \arguments{
 \item{object}{A Deepboost S4 class object}

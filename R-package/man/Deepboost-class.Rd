@@ -17,5 +17,7 @@ An S4 class to represent a bank account.
 \item{\code{predict}}{deepboost model instance prediction function}
 
 \item{\code{print}}{deepboost model evaluation statistics function}
+
+\item{\code{error}}{deepboost model training error}
 }}
 

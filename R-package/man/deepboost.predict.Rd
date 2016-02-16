@@ -4,8 +4,7 @@
 \alias{deepboost.predict}
 \title{Predicts instances responses based on a deepboost model}
 \usage{
-deepboost.predict(object, newdata, controls, weights = NULL, fitmem = NULL,
-  ...)
+deepboost.predict(object, newdata, controls = NULL)
 }
 \arguments{
 \item{object}{A Deepboost S4 class object}

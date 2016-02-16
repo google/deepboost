@@ -4,12 +4,14 @@
 #' @slot train deepboost model training function
 #' @slot predict deepboost model instance prediction function
 #' @slot print deepboost model evaluation statistics function
+#' @slot error deepboost model training error
 setClass("Deepboost",
          slots = list(
            lambda= "numeric",
            train = "function",
            predict = "function",
-           print = "function"
+           print = "function",
+           error = "numeric"
          ))
 
 #' Trains a deepboost model
@@ -18,8 +20,18 @@ setClass("Deepboost",
 #' @param data A data.frame to train on
 #' @param controls Paramters
 #' @return A trained Deepbost model
-deepboost.train <- function(object, data, controls, weights = NULL, fitmem = NULL, ...) {
+#' @export
+#setMethod("train", signature = "deepboost.train",
+#definition =
+deepboost.train <- function(object, data, controls = NULL) {
   # set slots
+  RET = new("Deepboost",
+            train = deepboost.train,
+            predict = deepboost.predict,
+            print = deepboost.print)
+  RET@lambda = object@lambda
+  RET@error = 0.0
+  return(RET)
 }
 
 #' Predicts instances responses based on a deepboost model
@@ -28,7 +40,8 @@ deepboost.train <- function(object, data, controls, weights = NULL, fitmem = NUL
 #' @param newdata A data.frame to predict responses for
 #' @param controls Paramters
 #' @return A vector of respones
-deepboost.predict <- function(object, newdata, controls, weights = NULL, fitmem = NULL, ...) {
+#' @export
+deepboost.predict <- function(object, newdata, controls = NULL) {
 }
 
 #' Evaluates and prints statistics for a deepboost model
@@ -36,8 +49,14 @@ deepboost.predict <- function(object, newdata, controls, weights = NULL, fitmem 
 #' @param object A Deepboost S4 class object
 #' @param controls Paramters
 #' @return Prints to console the model evaluation string
-deepboost.print <- function(object, controls, weights = NULL, fitmem = NULL, ...) {
-  # call evlaute_R from RcppExports.R
+#' @export
+deepboost.print <- function(object) {
+  # call Evlaute_R from RcppExports.R
+  print(paste("error ",object@error))
+  x <- c(1,2,3)
+  print(x)
+  y <- Evaluate_R(x)
+  print(y)
 }
 
 #' Empty Deepboost S4 class object with default settings
@@ -45,7 +64,8 @@ Deepboost <- new("Deepboost",
                  lambda=0.1,
                  train = deepboost.train,
                  predict = deepboost.predict,
-                 print = deepboost.print #evaluate
+                 print = deepboost.print, #evaluate
+                 error = -1.0
 )
 
 #' Main function for deepboost moel creation
@@ -59,9 +79,10 @@ deepboost <- function(formula, data = list(),
                       controls = NULL) {
 
   # parse formula
-
-  deepboost.train(Deepboost, data, ...)
-  print("in deepboost")
+  print("training deepboost model")
+  fit <- deepboost.train(Deepboost, data, controls)
+  print("evaluating deepboost model")
+  deepboost.print(fit)
 }
 
 

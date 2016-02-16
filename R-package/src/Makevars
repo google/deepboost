@@ -1,5 +1,5 @@
 PKG_ROOT = ../../
-PKG_CPPFLAGS =  -I. -I../inst/include -I$(PKG_ROOT)
+PKG_CPPFLAGS =  -I. -I../inst/include -I$(PKG_ROOT) -I$(PKG_ROOT)src
 
 #glibs
 GFLAGS_LIB = -lgflags
@@ -7,7 +7,7 @@ GLOG_LIB = -lglog
 
 PKG_LIBS = $(GFLAGS_LIB) $(GLOG_LIB)
 
-PKG_CXXFLAGS = -std=c++0x
+#PKG_CXXFLAGS = -std=c++0x
 CXX_STD = CXX11
 
 

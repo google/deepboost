@@ -1,5 +1,5 @@
 #include <Rcpp.h>
-#include "deepboost_C.h"
+//#include "deepboost_C.h"
 
 using namespace Rcpp;
 
@@ -40,5 +40,7 @@ NumericVector Predict_R(NumericVector x) {
 // [[Rcpp::export]]
 NumericVector Evaluate_R(NumericVector x) {
 
-  return x*2;
+  //Evaluate();
+  NumericVector y = x*2;
+  return y;
 }
