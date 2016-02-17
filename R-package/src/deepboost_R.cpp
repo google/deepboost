@@ -1,5 +1,5 @@
 #include <Rcpp.h>
-//#include "deepboost_C.h"
+#include "deepboost_C.h"
 
 using namespace Rcpp;
 

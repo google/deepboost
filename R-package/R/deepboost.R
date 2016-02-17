@@ -1,4 +1,5 @@
 #' @useDynLib deepboost
+#' @importFrom Rcpp evalCpp
 NULL
 
 #' An S4 class to represent a deepboost model.
