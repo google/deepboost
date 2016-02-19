@@ -72,16 +72,49 @@ Deepboost <- new("Deepboost",
                  error = -1.0
 )
 
-#' Main function for deepboost moel creation
+#' Main function for deepboost model creation
 #'
-#' @param formula A R Formula object see : ?formula
-#' @param data A data.frame of samples to train on
+#' @param x A data.frame of samples' values
+#' @param y A data.frame of samples's labels
+#' @param weights The weight of each example
 #' @param controls parameters
 #' @return A trained Deepbost model
 #' @export
-deepboost <- function(formula, data = list(),
-                      controls = NULL) {
+deepboost.default <- function(x, y, weights = NULL,
+                              controls = NULL) {
+  # initialize weights
+  n <- dim(data)[1]
+  if(is.null(weights))
+  {
+    weights <- rep(1/n, n)
+  }
+  # create data
+  data <- data.frame(x)
+  data['label'] <- y
+  data['weight'] <- weights
+  
+  print("training deepboost model")
+  fit <- deepboost.train(Deepboost, data, controls)
+  print("evaluating deepboost model")
+  deepboost.print(fit)
+}
 
+#' Main function for deepboost model creation, using a formula
+#'
+#' @param formula A R Formula object see : ?formula
+#' @param data A data.frame of samples to train on
+#' @param weights The weight of each example
+#' @param controls parameters
+#' @return A trained Deepbost model
+#' @export
+deepboost.formula <- function(formula, data, weights = NULL,
+                      controls = NULL) {
+  # initialize weights
+  n <- dim(data)[1]
+  if(is.null(weights))
+  {
+    weights <- rep(1/n, n)
+  }
   # parse formula
   cl <- match.call()
   mf <- match.call(expand.dots = FALSE)
@@ -90,16 +123,16 @@ deepboost <- function(formula, data = list(),
   mf$drop.unused.levels <- TRUE
   mf[[1L]] <- quote(stats::model.frame)
   mf <- eval(mf, parent.frame())
-  
   mt <- attr(mf, "terms")
   y <- model.response(mf, "numeric")
   x <- model.matrix(mt, mf, contrasts)
-  
+  # create data
+  data <- data.frame(x[,-1])
+  data['label'] <- y
+  data['weight'] <- weights
   
   print("training deepboost model")
   fit <- deepboost.train(Deepboost, data, controls)
   print("evaluating deepboost model")
   deepboost.print(fit)
 }
-
-
