@@ -10,7 +10,6 @@ Daniel Marcous, Yotam Sandbank
 #include "glog/logging.h"
 
 #include "deepboost_C.h"
-//#include "../../src/boost.h"
 #include "boost.h"
 
 DECLARE_int32(tree_depth);

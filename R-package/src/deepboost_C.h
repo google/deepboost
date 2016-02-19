@@ -6,7 +6,6 @@ Daniel Marcous, Yotam Sandbank
 #ifndef DEEPBOOST_C_H_
 #define DEEPBOOST_C_H_
 
-//#include "../../src/types.h"
 #include "types.h"
 
 // Train a deepboost model on the given examples, using
