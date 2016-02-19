@@ -6,13 +6,19 @@
 using namespace Rcpp;
 
 // Train_R
-NumericVector Train_R(NumericVector x);
-RcppExport SEXP deepboost_Train_R(SEXP xSEXP) {
+Model_R Train_R(DataFrame data, int tree_depth, int num_iter, double beta, double lambda, char loss_type, bool verbose);
+RcppExport SEXP deepboost_Train_R(SEXP dataSEXP, SEXP tree_depthSEXP, SEXP num_iterSEXP, SEXP betaSEXP, SEXP lambdaSEXP, SEXP loss_typeSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    __result = Rcpp::wrap(Train_R(x));
+    Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type tree_depth(tree_depthSEXP);
+    Rcpp::traits::input_parameter< int >::type num_iter(num_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< char >::type loss_type(loss_typeSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    __result = Rcpp::wrap(Train_R(data, tree_depth, num_iter, beta, lambda, loss_type, verbose));
     return __result;
 END_RCPP
 }

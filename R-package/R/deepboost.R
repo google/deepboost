@@ -11,11 +11,18 @@ NULL
 #' @slot error deepboost model training error
 setClass("Deepboost",
          slots = list(
+           tree_depth = "numeric",
+           num_iter = "numeric",
+           beta = "numeric",
            lambda= "numeric",
+           loss_type = "character",
+           verbose = "boolean",
            train = "function",
            predict = "function",
            print = "function",
-           error = "numeric"
+           error = "numeric",
+           examples = "Examples_R",
+           model = "Model_R"
          ))
 
 #' Trains a deepboost model
@@ -27,14 +34,69 @@ setClass("Deepboost",
 #' @export
 #setMethod("train", signature = "deepboost.train",
 #definition =
-deepboost.train <- function(object, data, controls = NULL) {
+deepboost.train <- function(object, data,
+                            tree_depth,
+                            num_iter,
+                            beta,
+                            lambda,
+                            loss_type,
+                            verbose) {
   # set slots
   RET = new("Deepboost",
             train = deepboost.train,
             predict = deepboost.predict,
             print = deepboost.print)
-  RET@lambda = object@lambda
+
+  # Check parameter validity
+  if (!(is.numeric(tree_depth)) || tree_depth <= 0 || !(tree_depth%%1==0))
+  {
+    stop("ERROR_paramter_setting : tree_depth must be >= 1 and integer (Default : 5)" )
+  }
+  RET@tree_depth = as.integer(tree_depth)
+
+  # Check parameter validity
+  if (!(is.numeric(num_iter)) || num_iter <= 0 || !(num_iter%%1==0))
+  {
+    stop("ERROR_paramter_setting : num_iter must be >= 1 and integer (Default : 1)" )
+  }
+  RET@num_iter = as.integer(num_iter)
+
+  # (beta, lambda) =
+  # (0,0) - adaboost, (>0,0) - L1, (0,>0) deepboost, (>0, >0) deepbost+L1
+
+  # Check parameter validity
+  if (!(is.numeric(beta)) || beta < 0.0)
+  {
+    stop("ERROR_paramter_setting : beta must be >= 0 and double (Default : 0.0)" )
+  }
+  RET@beta = as.double(beta)
+
+  # Check parameter validity
+  if (!(is.numeric(lambda)) || lambda < 0.0)
+  {
+    stop("ERROR_paramter_setting : lambda must be >= 0 and double (Default : 0.05)" )
+  }
+  RET@lambda = as.double(lambda)
+
+  # Check parameter validity
+  if (!(is.character(loss_type)) || (loss_type != "l" && loss_type != "e"))
+  {
+    stop("ERROR_paramter_setting : loss_type must be \"l\" - logistic or \"e\" - exponential (Default : \"l\")" )
+  }
+  RET@loss_type = as.character(loss_type)
+
+  if (!(is.boolean(verbose)))
+  {
+    stop("ERROR_paramter_setting : verbose must be boolean (True / False) (Default : TRUE)" )
+  }
+  RET@verbose = as.character(verbose)
+
   RET@error = 0.0
+
+
+#   examples = "Examples_R",
+#   model = "Model_R"
+
   return(RET)
 }
 
@@ -65,11 +127,19 @@ deepboost.print <- function(object) {
 
 #' Empty Deepboost S4 class object with default settings
 Deepboost <- new("Deepboost",
-                 lambda=0.1,
+#                  tree_depth = 5,
+#                  num_iter = 1,
+#                  # (0,0) - adaboost, (>0,0) - L1, (0,>0) deepboost, (>0, >0) deepbost+L1
+#                  beta = 0.0,
+#                  lambda= 0.05,
+#                  loss_type = "l", #l - logistic, #e exponential
+#                  verbose = TRUE,
                  train = deepboost.train,
                  predict = deepboost.predict,
                  print = deepboost.print, #evaluate
-                 error = -1.0
+                 error = -1.0,
+                 examples = NULL,
+                 model = NULL
 )
 
 #' Main function for deepboost model creation
@@ -81,7 +151,13 @@ Deepboost <- new("Deepboost",
 #' @return A trained Deepbost model
 #' @export
 deepboost.default <- function(x, y, weights = NULL,
-                              controls = NULL) {
+                              tree_depth = 5,
+                              num_iter = 1,
+                              beta = 0.0,
+                              lambda= 0.05,
+                              loss_type = "l",
+                              verbose = TRUE
+                              ) {
   # initialize weights
   n <- dim(x)[1]
   if(is.null(weights))
@@ -103,7 +179,13 @@ deepboost.default <- function(x, y, weights = NULL,
   data['weight'] <- weights
 
   print("training deepboost model")
-  fit <- deepboost.train(Deepboost, data, controls)
+  fit <- deepboost.train(Deepboost, data,
+                         tree_depth,
+                         num_iter,
+                         beta,
+                         lambda,
+                         loss_type,
+                         verbose)
   print("evaluating deepboost model")
   deepboost.print(fit)
 }
@@ -117,7 +199,12 @@ deepboost.default <- function(x, y, weights = NULL,
 #' @return A trained Deepbost model
 #' @export
 deepboost.formula <- function(formula, data, weights = NULL,
-                      controls = NULL) {
+                              tree_depth = 5,
+                              num_iter = 1,
+                              beta = 0.0,
+                              lambda= 0.05,
+                              loss_type = "l",
+                              verbose = TRUE) {
   # initialize weights
   n <- dim(data)[1]
   if(is.null(weights))
@@ -149,7 +236,13 @@ deepboost.formula <- function(formula, data, weights = NULL,
   data['weight'] <- weights
 
   print("training deepboost model")
-  fit <- deepboost.train(Deepboost, data, controls)
+  fit <- deepboost.train(Deepboost, data,
+                         tree_depth,
+                         num_iter,
+                         beta,
+                         lambda,
+                         loss_type,
+                         verbose)
   print("evaluating deepboost model")
   deepboost.print(fit)
 }

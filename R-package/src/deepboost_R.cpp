@@ -41,18 +41,22 @@ class Examples_R {
       }
     }
 
+    // TODO
+//   get_examples =
+//   set_examples=
+
   private:
     vector<Example> examples;
 };
 
 class Model_R {
-public:
-  Model_R(){
-    vector<pair<Weight, Tree> > tree_vec;
-    model = tree_vec;
-  }
-private:
-  Model model;
+  public:
+    Model_R(){
+      vector<pair<Weight, Tree> > tree_vec;
+      model = tree_vec;
+    }
+  private:
+    Model model;
 };
 
 
@@ -73,9 +77,17 @@ RCPP_MODULE(mod_Model_R) {
 //’ @param x input character vector
 //’ @return characters in each element of the vector
 // [[Rcpp::export]]
-Examples_R Train_R(DataFrame data) {
-  Examples_R *examples = new Examples_R(data);
-  return *examples;
+Model_R Train_R(DataFrame data,
+                   int tree_depth, int num_iter,
+                   double beta, double lambda, char loss_type,
+                   bool verbose) {
+  Examples_R *examples_R = new Examples_R(data);
+  Model_R *model_R = new Model_R();
+
+  // get examples + get model - adresses
+  //Train();
+
+  return *model_R;
 }
 
 //’ Predicts instances labels based on a deepboost model
