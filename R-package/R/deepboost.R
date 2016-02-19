@@ -92,7 +92,7 @@ deepboost.default <- function(x, y, weights = NULL,
   data <- data.frame(x)
   data['label'] <- y
   data['weight'] <- weights
-  
+
   print("training deepboost model")
   fit <- deepboost.train(Deepboost, data, controls)
   print("evaluating deepboost model")
@@ -130,7 +130,7 @@ deepboost.formula <- function(formula, data, weights = NULL,
   data <- data.frame(x[,-1])
   data['label'] <- y
   data['weight'] <- weights
-  
+
   print("training deepboost model")
   fit <- deepboost.train(Deepboost, data, controls)
   print("evaluating deepboost model")

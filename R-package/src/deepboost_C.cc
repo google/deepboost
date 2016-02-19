@@ -11,6 +11,7 @@ Daniel Marcous, Yotam Sandbank
 
 #include "deepboost_C.h"
 #include "boost.h"
+#include "tree.h"
 
 DECLARE_int32(tree_depth);
 DECLARE_double(beta);
@@ -21,6 +22,9 @@ DECLARE_string(loss_type);
 // numIter iterations (which not necessarily means numIter trees)
 void Train(vector<Example>* train_examples, Model* model, int tree_depth,
  int num_iter, double beta, double lambda, char loss_type, bool verbose) {
+
+  // Initialize tree data for training
+  InitializeTreeData(*train_examples, (*train_examples).size());
 
 	// Set flags
 	FLAGS_tree_depth = tree_depth;
