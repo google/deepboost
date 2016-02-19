@@ -83,11 +83,20 @@ Deepboost <- new("Deepboost",
 deepboost.default <- function(x, y, weights = NULL,
                               controls = NULL) {
   # initialize weights
-  n <- dim(data)[1]
+  n <- dim(x)[1]
   if(is.null(weights))
   {
     weights <- rep(1/n, n)
   }
+  # make response either 1 or -1
+  y <- factor(y)
+  if(length(levels(y))!=2)
+  {
+    print("ERROR: response must be binary")
+    return()
+  }
+  print(paste("1 for",levels(y)[1],"and -1 for",levels(y)[2]))
+  levels(y) <- c(1,-1)
   # create data
   data <- data.frame(x)
   data['label'] <- y
@@ -124,8 +133,16 @@ deepboost.formula <- function(formula, data, weights = NULL,
   mf[[1L]] <- quote(stats::model.frame)
   mf <- eval(mf, parent.frame())
   mt <- attr(mf, "terms")
-  y <- model.response(mf, "numeric")
+  y <- factor(model.response(mf))
   x <- model.matrix(mt, mf, contrasts)
+  # make response either 1 or -1
+  if(length(levels(y))!=2)
+  {
+    print("ERROR: response must be binary")
+    return()
+  }
+  print(paste("1 for",levels(y)[1],"and -1 for",levels(y)[2]))
+  levels(y) <- c(1,-1)
   # create data
   data <- data.frame(x[,-1])
   data['label'] <- y
