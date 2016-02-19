@@ -83,6 +83,19 @@ deepboost <- function(formula, data = list(),
                       controls = NULL) {
 
   # parse formula
+  cl <- match.call()
+  mf <- match.call(expand.dots = FALSE)
+  m <- match(c("formula", "data"), names(mf), 0L)
+  mf <- mf[c(1L, m)]
+  mf$drop.unused.levels <- TRUE
+  mf[[1L]] <- quote(stats::model.frame)
+  mf <- eval(mf, parent.frame())
+  
+  mt <- attr(mf, "terms")
+  y <- model.response(mf, "numeric")
+  x <- model.matrix(mt, mf, contrasts)
+  
+  
   print("training deepboost model")
   fit <- deepboost.train(Deepboost, data, controls)
   print("evaluating deepboost model")
