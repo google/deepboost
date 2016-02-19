@@ -89,6 +89,7 @@ deepboost.default <- function(x, y, weights = NULL,
     weights <- rep(1/n, n)
   }
   # make response either 1 or -1
+  y <- factor(y)
   if(length(levels(y))!=2)
   {
     print("ERROR: response must be binary")
@@ -132,7 +133,7 @@ deepboost.formula <- function(formula, data, weights = NULL,
   mf[[1L]] <- quote(stats::model.frame)
   mf <- eval(mf, parent.frame())
   mt <- attr(mf, "terms")
-  y <- model.response(mf)
+  y <- factor(model.response(mf))
   x <- model.matrix(mt, mf, contrasts)
   # make response either 1 or -1
   if(length(levels(y))!=2)
