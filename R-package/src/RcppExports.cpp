@@ -6,7 +6,7 @@
 using namespace Rcpp;
 
 // Train_R
-Model_R Train_R(DataFrame data, int tree_depth, int num_iter, double beta, double lambda, char loss_type, bool verbose);
+Rcpp::List Train_R(DataFrame data, int tree_depth, int num_iter, double beta, double lambda, char loss_type, bool verbose);
 RcppExport SEXP deepboost_Train_R(SEXP dataSEXP, SEXP tree_depthSEXP, SEXP num_iterSEXP, SEXP betaSEXP, SEXP lambdaSEXP, SEXP loss_typeSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;

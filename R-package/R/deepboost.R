@@ -16,13 +16,15 @@ setClass("Deepboost",
            beta = "numeric",
            lambda= "numeric",
            loss_type = "character",
-           verbose = "boolean",
+           verbose = "logical",
            train = "function",
            predict = "function",
            print = "function",
            error = "numeric",
-           examples = "Examples_R",
-           model = "Model_R"
+           examples = "data.frame",
+           model = "list"
+#            examples = "Examples_R",
+#            model = "Model_R"
          ))
 
 #' Trains a deepboost model
@@ -85,17 +87,21 @@ deepboost.train <- function(object, data,
   }
   RET@loss_type = as.character(loss_type)
 
-  if (!(is.boolean(verbose)))
+  if (!(is.logical(verbose)))
   {
     stop("ERROR_paramter_setting : verbose must be boolean (True / False) (Default : TRUE)" )
   }
-  RET@verbose = as.character(verbose)
+  RET@verbose = verbose
 
   RET@error = 0.0
 
+  RET@examples = data
 
-#   examples = "Examples_R",
-#   model = "Model_R"
+  # call training
+  model =  Train_R(RET@examples,
+                   RET@tree_depth, RET@num_iter, RET@beta, RET@lambda, RET@loss_type, RET@verbose)
+
+  RET@model = model
 
   return(RET)
 }
@@ -138,8 +144,8 @@ Deepboost <- new("Deepboost",
                  predict = deepboost.predict,
                  print = deepboost.print, #evaluate
                  error = -1.0,
-                 examples = NULL,
-                 model = NULL
+                 examples = data.frame(),
+                 model = list()
 )
 
 #' Main function for deepboost model creation
@@ -188,6 +194,8 @@ deepboost.default <- function(x, y, weights = NULL,
                          verbose)
   print("evaluating deepboost model")
   deepboost.print(fit)
+
+  return (fit)
 }
 
 #' Main function for deepboost model creation, using a formula
@@ -245,4 +253,6 @@ deepboost.formula <- function(formula, data, weights = NULL,
                          verbose)
   print("evaluating deepboost model")
   deepboost.print(fit)
+
+  return (fit)
 }

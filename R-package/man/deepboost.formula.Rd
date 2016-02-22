@@ -4,7 +4,9 @@
 \alias{deepboost.formula}
 \title{Main function for deepboost model creation, using a formula}
 \usage{
-deepboost.formula(formula, data, weights = NULL, controls = NULL)
+deepboost.formula(formula, data, weights = NULL, tree_depth = 5,
+  num_iter = 1, beta = 0, lambda = 0.05, loss_type = "l",
+  verbose = TRUE)
 }
 \arguments{
 \item{formula}{A R Formula object see : ?formula}

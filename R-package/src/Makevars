@@ -14,7 +14,7 @@ CXX_STD = CXX11
 PKG_CXXFLAGS = $(GFLAGS_LIB) $(GLOG_LIB) -std=c++0x
 PKG_LIBS = $(GFLAGS_LIB) $(GLOG_LIB)
 
-OBJECTS = $(ORIG_SOURCES)tree.o $(ORIG_SOURCES)boost.o ./deepboost_C.o ./deepboost_R.o ./RcppExports.o
+OBJECTS = $(ORIG_SOURCES)tree.o $(ORIG_SOURCES)boost.o ./deepboost_C.o ./deepboost_converters.o ./deepboost_R.o ./RcppExports.o
 
 all : deepboost.so
 

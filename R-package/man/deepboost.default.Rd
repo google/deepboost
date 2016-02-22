@@ -4,7 +4,8 @@
 \alias{deepboost.default}
 \title{Main function for deepboost model creation}
 \usage{
-deepboost.default(x, y, weights = NULL, controls = NULL)
+deepboost.default(x, y, weights = NULL, tree_depth = 5, num_iter = 1,
+  beta = 0, lambda = 0.05, loss_type = "l", verbose = TRUE)
 }
 \arguments{
 \item{x}{A data.frame of samples' values}
