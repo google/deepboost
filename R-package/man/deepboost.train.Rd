@@ -9,15 +9,14 @@ deepboost.train(object, data, tree_depth, num_iter, beta, lambda, loss_type,
 }
 \arguments{
 \item{object}{A Deepboost S4 class object}
-
-\item{data}{A data.frame to train on}
-
-\item{controls}{Paramters}
 }
 \value{
 A trained Deepbost model
 }
 \description{
 Trains a deepboost model
+}
+\details{
+(beta,lambda) = (0,0) - adaboost, (>0,0) - L1, (0,>0) deepboost, (>0, >0) deepbost+L1
 }
 

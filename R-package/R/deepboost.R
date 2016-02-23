@@ -17,21 +17,21 @@ setClass("Deepboost",
            lambda= "numeric",
            loss_type = "character",
            verbose = "logical",
-           train = "function",
-           predict = "function",
-           print = "function",
-           error = "numeric",
            examples = "data.frame",
            model = "list"
-#            examples = "Examples_R",
-#            model = "Model_R"
          ))
 
 #' Trains a deepboost model
 #'
 #' @param object A Deepboost S4 class object
-#' @param data A data.frame to train on
-#' @param controls Paramters
+#’ @param data input data.frame as training for model
+#’ @param tree_depth maximum depth for a single decision tree in the model
+#’ @param num_iter number of iterations = number of trees in ensemble
+#’ @param beta regularisation for scores (L1)
+#’ @param lambda regularisation for tree depth
+#’ @param loss_type - "l" logistic, "e" exponential
+#’ @param verbose - print extra data while training TRUE / FALSE
+#' @details (beta,lambda) = (0,0) - adaboost, (>0,0) - L1, (0,>0) deepboost, (>0, >0) deepbost+L1
 #' @return A trained Deepbost model
 #' @export
 #setMethod("train", signature = "deepboost.train",
@@ -44,10 +44,7 @@ deepboost.train <- function(object, data,
                             loss_type,
                             verbose) {
   # set slots
-  RET = new("Deepboost",
-            train = deepboost.train,
-            predict = deepboost.predict,
-            print = deepboost.print)
+  RET = new("Deepboost")
 
   # Check parameter validity
   if (!(is.numeric(tree_depth)) || tree_depth <= 0 || !(tree_depth%%1==0))
@@ -93,8 +90,6 @@ deepboost.train <- function(object, data,
   }
   RET@verbose = verbose
 
-  RET@error = 0.0
-
   RET@examples = data
 
   # call training
@@ -110,40 +105,40 @@ deepboost.train <- function(object, data,
 #'
 #' @param object A Deepboost S4 class object
 #' @param newdata A data.frame to predict responses for
-#' @param controls Paramters
 #' @return A vector of respones
 #' @export
-deepboost.predict <- function(object, newdata, controls = NULL) {
+deepboost.predict <- function(object, newdata) {
+  labels <-
+    Predict_R(newdata,
+               object@model)
+  return (unlist(labels))
+}
+
+#' Evaluates and prints statistics for a deepboost model on the train set
+#'
+#' @param object A Deepboost S4 class object
+#' @return List with model_statistics to console the model evaluation string
+#' @export
+deepboost.print <- function(object) {
+  model_stats <- deepboost.evaluate(object, object@examples)
+  return (model_stats)
 }
 
 #' Evaluates and prints statistics for a deepboost model
 #'
 #' @param object A Deepboost S4 class object
-#' @param controls Paramters
-#' @return Prints to console the model evaluation string
+#' @param a \code{data.frame} object to evaluate with the model
+#' @return a list with model statistics - error, avg_tree_size, num_trees
 #' @export
-deepboost.print <- function(object) {
-  # call Evlaute_R from RcppExports.R
-  print(paste("error ",object@error))
-  x <- c(1,2,3)
-  print(x)
-  y <- Evaluate_R(x)
-  print(y)
+deepboost.evaluate <- function(object, data) {
+  model_stats <-
+    Evaluate_R(data,
+               object@model)
+  return (model_stats)
 }
 
 #' Empty Deepboost S4 class object with default settings
 Deepboost <- new("Deepboost",
-#                  tree_depth = 5,
-#                  num_iter = 1,
-#                  # (0,0) - adaboost, (>0,0) - L1, (0,>0) deepboost, (>0, >0) deepbost+L1
-#                  beta = 0.0,
-#                  lambda= 0.05,
-#                  loss_type = "l", #l - logistic, #e exponential
-#                  verbose = TRUE,
-                 train = deepboost.train,
-                 predict = deepboost.predict,
-                 print = deepboost.print, #evaluate
-                 error = -1.0,
                  examples = data.frame(),
                  model = list()
 )
@@ -197,6 +192,19 @@ deepboost.default <- function(x, y, weights = NULL,
 
   return (fit)
 }
+
+#' Main function for deepboost model creation
+#'
+#' @param formula A R Formula object see : ?formula
+#' @param data A data.frame of samples to train on
+#' @param weights The weight of each example
+#' @param controls parameters
+#' @return A trained Deepbost model
+#' @export
+deepboost <- function(formula, data, ...) {
+  deepboost.formula(formula, data, ...)
+}
+
 
 #' Main function for deepboost model creation, using a formula
 #'
@@ -256,3 +264,33 @@ deepboost.formula <- function(formula, data, weights = NULL,
 
   return (fit)
 }
+
+#' Predict method for Deepboost model
+#'
+#' Predicted values based on deepboost model object.
+#'
+#' @param object Object of class "Deepboost"
+#' @param newdata takes \code{data.frame}.
+#'
+#' @details
+#' The option \code{ntreelimit} purpose is to let the user train a model with lots
+#' of trees but use only the first trees for prediction to avoid overfitting
+#' (without having to train a new model with less trees).
+#' @export
+setMethod("predict", signature = "Deepboost",
+          definition = function(object, newdata) {
+            deepboost.predict(object, newdata)
+})
+
+#' Print method for Deepboost model
+#'
+#' Evaluates a trained deepboost model object.
+#'
+#' @details
+#' Evalutes a Deepboost model object.
+#' Prints : bla \code{error}
+#' @export
+setMethod("show", signature = "Deepboost",
+          definition = function(object) {
+            deepboost.print(object)
+          })

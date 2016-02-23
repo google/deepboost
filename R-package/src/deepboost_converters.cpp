@@ -5,7 +5,7 @@
 
 using namespace Rcpp;
 
-vector<Example> DFtoTrainEXamples(DataFrame data)
+vector<Example> createExampleVectorFromDataFrame(DataFrame data)
 {
     vector<Example> examples;
     int example_number = data.nrows();
@@ -43,31 +43,168 @@ vector<Example> DFtoTrainEXamples(DataFrame data)
     return examples;
 }
 
-Rcpp::List modelToList(Model model)
+Rcpp::List modelToList(Model model_)
 {
-  Rcpp::List model_R = List(1);
-  return model_R;
-}
+  List model = List();
 
-Model listToModel(Rcpp::List model_R)
-{
-  Model model;
+  for (pair<Weight, Tree> pair_: model_) {
+    vector<Node> tree_ = pair_.second;
+    List nodes = List::create();
+
+    for(Node node_: tree_) {
+      vector<Example> examples_ = node_.examples;
+      List examples = List::create();
+
+      for(Example example_: examples_){
+        examples.push_back(
+          List::create(
+            Named("values",example_.values),
+            Named("label",example_.label),
+            Named("weight",example_.weight)
+          )
+        );
+      }
+
+      nodes.push_back(
+          List::create(
+                      Named("examples",examples),
+                      Named("split_feature",node_.split_feature),
+                      Named("split_value",node_.split_value),
+                      Named("left_child_id",node_.left_child_id),
+                      Named("right_child_id",node_.right_child_id),
+                      Named("positive_weight",node_.positive_weight),
+                      Named("negative_weight",node_.negative_weight),
+                      Named("leaf",node_.leaf),
+                      Named("depth",node_.depth)
+                      )
+                      );
+    }
+
+    model.push_back(
+      List::create(
+        Named("tree_weight",pair_.first),
+        Named("tree",nodes)
+        )
+      );
+  }
   return model;
 }
 
-Rcpp::List train_not_exported(DataFrame data,
+Model listToModel(Rcpp::List model_)
+{
+  Model model;
+  for(List pair_ : model_){
+    Weight tree_weight = Rcpp::as<Weight>(pair_["tree_weight"]);
+    List nodes_ = Rcpp::as<List>(pair_["tree"]);
+
+    vector<Node> tree;
+    for (List node_ : nodes_){
+      List examples_ = Rcpp::as<List>(node_["examples"]);
+      Feature split_feature = Rcpp::as<Feature>(node_["split_feature"]);
+      Value split_value = Rcpp::as<Value>(node_["split_value"]);
+      NodeId left_child_id = Rcpp::as<NodeId>(node_["left_child_id"]);
+      NodeId right_child_id = Rcpp::as<NodeId>(node_["right_child_id"]);
+      Weight positive_weight = Rcpp::as<Weight>(node_["positive_weight"]);
+      Weight negative_weight = Rcpp::as<Weight>(node_["negative_weight"]);
+      bool leaf = Rcpp::as<bool>(node_["leaf"]);
+      int depth = Rcpp::as<int>(node_["depth"]);
+
+      vector<Example> examples;
+      for (List example_ : examples_){
+        vector<Value> values = Rcpp::as<vector<Value>>(example_["values"]);
+        Label label = Rcpp::as<Label>(example_["label"]);
+        Weight weight = Rcpp::as<Weight>(example_["weight"]);
+
+        Example *example = new Example;
+
+        example -> values = values;
+        example -> label = label;
+        example -> weight = weight;
+
+        examples.push_back(*example);
+    }
+
+      Node *node = new Node;
+
+      node -> examples = examples;
+      node -> split_feature = split_feature;
+      node -> split_value = split_value;
+      node -> left_child_id = left_child_id;
+      node -> right_child_id = right_child_id;
+      node -> positive_weight = positive_weight;
+      node -> negative_weight = negative_weight;
+      node -> leaf = leaf;
+      node -> depth = depth;
+
+      tree.push_back(*node);
+    }
+
+    pair<Weight, Tree> pair = make_pair(tree_weight, tree);
+    model.push_back(pair);
+  }
+
+  return model;
+}
+
+Rcpp::List Train_C(DataFrame data,
                         int tree_depth, int num_iter,
                         double beta, double lambda, char loss_type,
                         bool verbose)
 {
-  vector<Example> train_examples = DFtoTrainEXamples(data);
-  Model model;
+  vector<Example> train_examples = createExampleVectorFromDataFrame(data);
+
+  Model model_;
 
   Train(&train_examples,
-        &model,
+        &model_,
         tree_depth, num_iter, beta, lambda, loss_type, verbose);
 
-  Rcpp::List model_R = modelToList(model);
+  List model = modelToList(model_);
 
-  return model_R;
+  return model;
 }
+
+Rcpp::List Evaluate_C(DataFrame data, Rcpp::List model)
+{
+  vector<Example> examples = createExampleVectorFromDataFrame(data);
+
+  Model model_ = listToModel(model);
+
+  float error;
+  float avg_tree_size;
+  int num_trees;
+
+  Evaluate(examples, model_,
+                &error, &avg_tree_size, &num_trees);
+
+  List model_stats = List::create(
+    Named("error",error),
+    Named("avg_tree_size",avg_tree_size),
+    Named("num_trees",num_trees)
+    );
+
+  return model_stats;
+}
+
+Rcpp::List Predict_C(DataFrame data, Rcpp::List model)
+{
+  printf("00");
+  vector<Example> examples = createExampleVectorFromDataFrame(data);
+  printf("01");
+  Model model_ = listToModel(model);
+  printf("02");
+  vector<Label> labels_ = Predict(examples, model_);
+
+  printf("1");
+
+  List labels;
+
+  for (Label label_ : labels_){
+    labels.push_back(label_);
+  }
+  printf("2");
+
+  return (labels);
+}
+
+

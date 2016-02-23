@@ -23,24 +23,26 @@ BEGIN_RCPP
 END_RCPP
 }
 // Predict_R
-NumericVector Predict_R(NumericVector x);
-RcppExport SEXP deepboost_Predict_R(SEXP xSEXP) {
+Rcpp::List Predict_R(DataFrame newdata, Rcpp::List model);
+RcppExport SEXP deepboost_Predict_R(SEXP newdataSEXP, SEXP modelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    __result = Rcpp::wrap(Predict_R(x));
+    Rcpp::traits::input_parameter< DataFrame >::type newdata(newdataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type model(modelSEXP);
+    __result = Rcpp::wrap(Predict_R(newdata, model));
     return __result;
 END_RCPP
 }
 // Evaluate_R
-NumericVector Evaluate_R(NumericVector x);
-RcppExport SEXP deepboost_Evaluate_R(SEXP xSEXP) {
+Rcpp::List Evaluate_R(DataFrame data, Rcpp::List model);
+RcppExport SEXP deepboost_Evaluate_R(SEXP dataSEXP, SEXP modelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    __result = Rcpp::wrap(Evaluate_R(x));
+    Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type model(modelSEXP);
+    __result = Rcpp::wrap(Evaluate_R(data, model));
     return __result;
 END_RCPP
 }

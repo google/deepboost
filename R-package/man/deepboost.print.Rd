@@ -2,19 +2,17 @@
 % Please edit documentation in R/deepboost.R
 \name{deepboost.print}
 \alias{deepboost.print}
-\title{Evaluates and prints statistics for a deepboost model}
+\title{Evaluates and prints statistics for a deepboost model on the train set}
 \usage{
 deepboost.print(object)
 }
 \arguments{
 \item{object}{A Deepboost S4 class object}
-
-\item{controls}{Paramters}
 }
 \value{
-Prints to console the model evaluation string
+List with model_statistics to console the model evaluation string
 }
 \description{
-Evaluates and prints statistics for a deepboost model
+Evaluates and prints statistics for a deepboost model on the train set
 }
 

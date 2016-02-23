@@ -5,11 +5,11 @@ Train_R <- function(data, tree_depth, num_iter, beta, lambda, loss_type, verbose
     .Call('deepboost_Train_R', PACKAGE = 'deepboost', data, tree_depth, num_iter, beta, lambda, loss_type, verbose)
 }
 
-Predict_R <- function(x) {
-    .Call('deepboost_Predict_R', PACKAGE = 'deepboost', x)
+Predict_R <- function(newdata, model) {
+    .Call('deepboost_Predict_R', PACKAGE = 'deepboost', newdata, model)
 }
 
-Evaluate_R <- function(x) {
-    .Call('deepboost_Evaluate_R', PACKAGE = 'deepboost', x)
+Evaluate_R <- function(data, model) {
+    .Call('deepboost_Evaluate_R', PACKAGE = 'deepboost', data, model)
 }
 

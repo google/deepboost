@@ -4,14 +4,12 @@
 \alias{deepboost.predict}
 \title{Predicts instances responses based on a deepboost model}
 \usage{
-deepboost.predict(object, newdata, controls = NULL)
+deepboost.predict(object, newdata)
 }
 \arguments{
 \item{object}{A Deepboost S4 class object}
 
 \item{newdata}{A data.frame to predict responses for}
-
-\item{controls}{Paramters}
 }
 \value{
 A vector of respones
