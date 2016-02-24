@@ -18,7 +18,8 @@ setClass("Deepboost",
            loss_type = "character",
            verbose = "logical",
            examples = "data.frame",
-           model = "list"
+           model = "list",
+           classes = "character"
          ))
 
 #' Trains a deepboost model
@@ -111,7 +112,10 @@ deepboost.predict <- function(object, newdata) {
   labels <-
     Predict_R(newdata,
                object@model)
-  return (unlist(labels))
+  labels <- unlist(labels)
+  labels[labels==1] <- RET@classes[1]
+  labels[labels==-1] <- RET@classes[2]
+  return (labels)
 }
 
 #' Evaluates and prints statistics for a deepboost model on the train set
@@ -167,12 +171,11 @@ deepboost.default <- function(x, y, weights = NULL,
   }
   # make response either 1 or -1
   y <- factor(y)
-  if(length(levels(y))!=2)
+  if (length(levels(y))!=2)
   {
-    print("ERROR: response must be binary")
-    return()
+    stop("ERROR_data : response must be binary" )
   }
-  print(paste("1 for",levels(y)[1],"and -1 for",levels(y)[2]))
+  RET@classes = levels(y)
   levels(y) <- c(1,-1)
   # create data
   data <- data.frame(x)
@@ -239,12 +242,11 @@ deepboost.formula <- function(formula, data, weights = NULL,
   y <- factor(model.response(mf))
   x <- model.matrix(mt, mf, contrasts)
   # make response either 1 or -1
-  if(length(levels(y))!=2)
+  if (length(levels(y))!=2)
   {
-    print("ERROR: response must be binary")
-    return()
+    stop("ERROR_data : response must be binary" )
   }
-  print(paste("1 for",levels(y)[1],"and -1 for",levels(y)[2]))
+  RET@classes = levels(y)
   levels(y) <- c(1,-1)
   # create data
   data <- data.frame(x[,-1])
