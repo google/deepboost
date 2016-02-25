@@ -42,7 +42,8 @@ void ValidateFlags() {
         FLAGS_dataset == "ocr17-mnist" || FLAGS_dataset == "ocr49-mnist" ||
         FLAGS_dataset == "splice" || FLAGS_dataset == "german" ||
         FLAGS_dataset == "ocr17" || FLAGS_dataset == "ocr49" ||
-        FLAGS_dataset == "diabetes");
+        FLAGS_dataset == "diabetes" || FLAGS_dataset == "australian" ||
+		FLAGS_dataset == "coli" || FLAGS_dataset == "magic");
   CHECK_GE(FLAGS_num_folds, 3);
   CHECK_GE(FLAGS_fold_to_cv, 0);
   CHECK_GE(FLAGS_fold_to_test, 0);

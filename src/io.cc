@@ -86,6 +86,75 @@ bool ParseLineBreastCancer(const string& line, Example* example) {
   return true;
 }
 
+bool ParseLineAustralian(const string& line, Example* example) {
+  example->values.clear();
+  vector<string> values;
+  SplitString(line, ',', &values);
+  for (int i = 0; i < values.size(); ++i) {
+    if (i == values.size() - 1) {
+      if (values[i] == "0") {  // Denied
+        example->label = -1;
+      } else if (values[i] == "1") {  // Accepted
+        example->label = +1;
+      } else {
+        LOG(FATAL) << "Unexpected label: " << values[i];
+      }
+    } else if (values[i] == "?") {
+      return false;
+    } else {
+      float value = atof(values[i].c_str());
+      example->values.push_back(value);
+    }
+  }
+  return true;
+}
+
+bool ParseLineColi(const string& line, Example* example) {
+  example->values.clear();
+  vector<string> values;
+  SplitString(line, ',', &values);
+  for (int i = 0; i < values.size(); ++i) {
+    if (i == values.size() - 1) {
+      if (values[i] == "0") {  // Denied
+        example->label = -1;
+      } else if (values[i] == "1") {  // Accepted
+        example->label = +1;
+      } else {
+        LOG(FATAL) << "Unexpected label: " << values[i];
+      }
+    } else if (values[i] == "?") {
+      return false;
+    } else {
+      float value = atof(values[i].c_str());
+      example->values.push_back(value);
+    }
+  }
+  return true;
+}
+
+bool ParseLineMagic(const string& line, Example* example) {
+  example->values.clear();
+  vector<string> values;
+  SplitString(line, ',', &values);
+  for (int i = 0; i < values.size(); ++i) {
+    if (i == values.size() - 1) {
+      if (values[i] == "h") {  // Hadronic
+        example->label = -1;
+      } else if (values[i] == "g") {  // Gamma
+        example->label = +1;
+      } else {
+        LOG(FATAL) << "Unexpected label: " << values[i];
+      }
+    } else if (values[i] == "?") {
+      return false;
+    } else {
+      float value = atof(values[i].c_str());
+      example->values.push_back(value);
+    }
+  }
+  return true;
+}
+
 bool ParseLineIon(const string& line, Example* example) {
   example->values.clear();
   vector<string> values;
@@ -251,6 +320,12 @@ void ReadData(vector<Example>* train_examples,
       keep_example = ParseLineBreastCancer(line, &example);
     } else if (FLAGS_dataset == "ionosphere") {
       keep_example = ParseLineIon(line, &example);
+	} else if (FLAGS_dataset == "australian") {
+	keep_example = ParseLineAustralian(line, &example);
+	} else if (FLAGS_dataset == "coli") {
+	keep_example = ParseLineColi(line, &example);
+	} else if (FLAGS_dataset == "magic") {
+	keep_example = ParseLineMagic(line, &example);
     } else if (FLAGS_dataset == "german") {
       keep_example = ParseLineGerman(line, &example);
     } else if (FLAGS_dataset == "ocr17-mnist") {
