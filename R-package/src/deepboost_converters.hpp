@@ -11,6 +11,8 @@ Daniel Marcous, Yotam Sandbank
 
 using namespace Rcpp;
 
+const float DEFAULT_WEIGHT = 1.0;
+
 // Train a deepboost model on the given examples, using
 // numIter iterations (which not necessarily means numIter trees)
 Rcpp::List Train_C(DataFrame data,

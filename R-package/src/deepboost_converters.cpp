@@ -9,13 +9,25 @@ vector<Example> createExampleVectorFromDataFrame(DataFrame data)
 {
     vector<Example> examples;
     int example_number = data.nrows();
-    NumericVector labels   = data["label"];
-    NumericVector weights = data["weight"];
+    NumericVector labels;
+    NumericVector weights;
+    bool labelsExist=false;
+    bool weightsExist=false;
 
     StringVector names = data.names();
     StringVector feature_names;
     for (int i = 0; i < names.length(); ++i) {
-      if (names[i] != "label" && names[i] !="weight")
+      if (names[i] == "label")
+      {
+        labels = data["label"];
+        labelsExist = true;
+      }
+      else if (names[i] == "weight")
+      {
+        weights = data["weight"];
+        weightsExist = true;
+      }
+      else
       {
         feature_names.push_back(names[i]);
       }
@@ -24,15 +36,25 @@ vector<Example> createExampleVectorFromDataFrame(DataFrame data)
     for (int i = 0; i < example_number; ++i) {
       Example *example = new Example;
 
-      example -> label = labels[i];
-      example -> weight = labels[i];
+      if (labelsExist)
+      {
+        example -> label = labels[i];
+      }
+      if(weightsExist)
+      {
+        example -> weight = labels[i];
+      }
+      else
+      {
+        example -> weight = DEFAULT_WEIGHT;
+      }
       example -> values = vector<Value>();
 
       examples.push_back(*example);
     }
 
-    for (int j = 0; j < feature_names.size(); ++j) {
-
+    for (int j = 0; j < feature_names.size(); ++j)
+    {
       NumericVector current_feature = data[String(feature_names[j])];
 
       for (int i = 0; i < example_number; ++i) {
@@ -188,21 +210,19 @@ Rcpp::List Evaluate_C(DataFrame data, Rcpp::List model)
 
 Rcpp::List Predict_C(DataFrame data, Rcpp::List model)
 {
-  printf("00");
-  vector<Example> examples = createExampleVectorFromDataFrame(data);
-  printf("01");
-  Model model_ = listToModel(model);
-  printf("02");
-  vector<Label> labels_ = Predict(examples, model_);
-
-  printf("1");
-
   List labels;
 
+  // Create datasets for predict
+  vector<Example> examples = createExampleVectorFromDataFrame(data);
+  Model model_ = listToModel(model);
+
+  // predict
+  vector<Label> labels_ = Predict(examples, model_);
+
+  // adjust return value
   for (Label label_ : labels_){
     labels.push_back(label_);
   }
-  printf("2");
 
   return (labels);
 }

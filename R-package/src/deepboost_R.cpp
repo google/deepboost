@@ -23,7 +23,7 @@ Rcpp::List Train_R(DataFrame data,
   // Train with inner model
   List model_R =
     Train_C(data,
-                   tree_depth, num_iter, beta, lambda, loss_type, verbose);
+            tree_depth, num_iter, beta, lambda, loss_type, verbose);
 
   return model_R;
 }

@@ -19,7 +19,8 @@ setClass("Deepboost",
            verbose = "logical",
            examples = "data.frame",
            model = "list",
-           classes = "character"
+           classes = "character",
+           error = "numeric"
          ))
 
 #' Trains a deepboost model
@@ -43,7 +44,8 @@ deepboost.train <- function(object, data,
                             beta,
                             lambda,
                             loss_type,
-                            verbose) {
+                            verbose,
+                            classes) {
   # set slots
   RET = new("Deepboost")
 
@@ -92,6 +94,7 @@ deepboost.train <- function(object, data,
   RET@verbose = verbose
 
   RET@examples = data
+  RET@classes = classes
 
   # call training
   model =  Train_R(RET@examples,
@@ -113,8 +116,8 @@ deepboost.predict <- function(object, newdata) {
     Predict_R(newdata,
                object@model)
   labels <- unlist(labels)
-  labels[labels==1] <- RET@classes[1]
-  labels[labels==-1] <- RET@classes[2]
+  labels[labels==1] <- object@classes[1]
+  labels[labels==-1] <- object@classes[2]
   return (labels)
 }
 
@@ -125,6 +128,9 @@ deepboost.predict <- function(object, newdata) {
 #' @export
 deepboost.print <- function(object) {
   model_stats <- deepboost.evaluate(object, object@examples)
+  print(paste("Model error:",model_stats[["error"]]))
+  print(paste("Average tree size:",model_stats[["avg_tree_size"]]))
+  print(paste("Number of trees:",model_stats[["num_trees"]]))
   return (model_stats)
 }
 
@@ -175,7 +181,7 @@ deepboost.default <- function(x, y, weights = NULL,
   {
     stop("ERROR_data : response must be binary" )
   }
-  RET@classes = levels(y)
+  classes = levels(y)
   levels(y) <- c(1,-1)
   # create data
   data <- data.frame(x)
@@ -189,7 +195,8 @@ deepboost.default <- function(x, y, weights = NULL,
                          beta,
                          lambda,
                          loss_type,
-                         verbose)
+                         verbose,
+                         classes)
   print("evaluating deepboost model")
   deepboost.print(fit)
 
@@ -246,7 +253,7 @@ deepboost.formula <- function(formula, data, weights = NULL,
   {
     stop("ERROR_data : response must be binary" )
   }
-  RET@classes = levels(y)
+  classes = levels(y)
   levels(y) <- c(1,-1)
   # create data
   data <- data.frame(x[,-1])
@@ -260,7 +267,8 @@ deepboost.formula <- function(formula, data, weights = NULL,
                          beta,
                          lambda,
                          loss_type,
-                         verbose)
+                         verbose,
+                         classes)
   print("evaluating deepboost model")
   deepboost.print(fit)
 

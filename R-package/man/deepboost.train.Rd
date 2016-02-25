@@ -5,7 +5,7 @@
 \title{Trains a deepboost model}
 \usage{
 deepboost.train(object, data, tree_depth, num_iter, beta, lambda, loss_type,
-  verbose)
+  verbose, classes)
 }
 \arguments{
 \item{object}{A Deepboost S4 class object}
