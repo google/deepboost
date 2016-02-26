@@ -1,0 +1,25 @@
+Liver Disorders (BUPA) data set
+
+1: Description.
+
+This data set analizes some liver disorders that might arise from excessive alcohol consumption (the first 5 variables), and the number of half-pint equivalents of alcoholic beverages drunk per day for each individual. The task is to select if a given individual suffers from alcoholism.   
+
+2: Type.			Classification	
+3: Origin.			Real world
+4: Instances.		345
+5: Features.		6
+6: Classes.			2	
+7: Missing values.	No
+
+8: Header.
+
+@relation bupa
+@attribute Mcv integer [65.0, 103]
+@attribute Alkphos integer [23.0, 138]
+@attribute Sgpt integer [4.0, 155]
+@attribute Sgot integer [5.0, 82]
+@attribute Gammagt integer [5.0, 297]
+@attribute Drinks real [0.0, 20.0]
+@attribute Selector {1,2}
+@inputs Mcv, Alkphos, Sgpt, Sgot, Gammagt, Drinks
+@outputs Selector

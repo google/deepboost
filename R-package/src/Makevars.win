@@ -30,5 +30,5 @@ all : deepboost.so
 
 deepboost.so: $(OBJECTS)
 
-clean:
-		rm -rf *.o $(PKG_ROOT)src/*.o
+# clean:
+# 		rm -rf *.o $(PKG_ROOT)src/*.o

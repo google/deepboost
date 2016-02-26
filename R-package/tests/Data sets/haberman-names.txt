@@ -1,0 +1,22 @@
+Haberman's Survival data set
+
+1: Description.
+
+This data set contains cases from a study that was conducted between 1958 and 1970 at the University of Chicago's Billings Hospital on the survival of patients who had undergone surgery for breast cancer. The task is to determine if the patient survived 5 years or longer (positive) or if the patient died within 5 year (negative).
+
+2: Type.			Classification	
+3: Origin.			Real world
+4: Instances.		306
+5: Features.		3
+6: Classes.			2	
+7: Missing values.	No
+
+8: Header.
+
+@relation haberman
+@attribute Age integer [30, 83]
+@attribute Year integer [58, 69]
+@attribute Positive integer [0, 52]
+@attribute Survival {positive, negative}
+@inputs Age, Year, Positive
+@outputs Survival

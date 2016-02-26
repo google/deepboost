@@ -1,0 +1,32 @@
+Statlog (Heart) data set
+
+1: Description.
+
+This dataset is a heart disease database similar to a database already present in the repository (Heart Disease databases) but in a slightly different form. The task is to detect the absence (1) or presence (2) of heart disease. 
+
+2: Type.			Classification	
+3: Origin.			Real world
+4: Instances.		270
+5: Features.		13
+6: Classes.			2	
+7: Missing values.	No
+
+8: Header.
+
+@relation heart
+@attribute Age integer [29, 77]
+@attribute Sex integer [0, 1]
+@attribute ChestPainType integer [1, 4]
+@attribute RestBloodPressure integer [94, 200]
+@attribute SerumCholestoral integer [126, 564]
+@attribute FastingBloodSugar integer [0, 1]
+@attribute ResElectrocardiographic integer [0, 2]
+@attribute MaxHeartRate integer [71, 202]
+@attribute ExerciseInduced integer [0, 1]
+@attribute Oldpeak real [0.0, 62.0]
+@attribute Slope integer [1, 3]
+@attribute MajorVessels integer [0, 3]
+@attribute Thal integer [3, 7]
+@attribute Class {1, 2}
+@inputs Age, Sex, ChestPainType, RestBloodPressure, SerumCholestoral, FastingBloodSugar, ResElectrocardiographic, MaxHeartRate, ExerciseInduced, Oldpeak, Slope, MajorVessels, Thal
+@outputs Class

@@ -1,0 +1,24 @@
+Banana data set
+
+1: Description.
+
+An artificial data set where instances belongs to several clusters with a banana shape. 
+
+There are two attributes At1 and At2 corresponding to the x and y axis, respectively. 
+
+The class label (-1 and 1) represents one of the two banana shapes in the dataset.
+
+2: Type.			Classification	
+3: Origin.			Real world
+4: Instances.		5300
+5: Features.		2
+6: Classes.			2	
+7: Missing values.	No
+
+8: Header.
+@relation banana
+@attribute At1 real[-3.09,2.81]
+@attribute At2 real[-2.39,3.19]
+@attribute Class {-1.0,1.0}
+@inputs At1, At2
+@outputs Class

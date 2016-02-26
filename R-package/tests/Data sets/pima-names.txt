@@ -1,0 +1,40 @@
+Pima Indians Diabetes data set
+
+1: Description.
+
+From National Institute of Diabetes and Digestive and Kidney Diseases. Several constraints were placed on the selection of these instances from a larger database. In particular, all patients here are females at least 21 years old of Pima Indian heritage. 
+
+The class label represents if the person has not diabetes (tested_negative) or the person has diabetes (tested_positive). 
+
+Attribute information: 
+
+1. Preg = Number of times pregnant 
+2. Plas = Plasma glucose concentration a 2 hours in an oral glucose tolerance test 
+3. Pres = Diastolic blood pressure (mm Hg) 
+4. Skin = Triceps skin fold thickness (mm) 
+5. Insu = 2-Hour serum insulin (mu U/ml) 
+6. Mass = Body mass index (weight in kg/(height in m)^2) 
+7. Pedi = Diabetes pedigree function 
+8. Age = Age (years)
+
+2: Type.			Classification	
+3: Origin.			Real world
+4: Instances.		768
+5: Features.		8
+6: Classes.			2	
+7: Missing values.	No
+
+8: Header.
+
+@relation pima
+@attribute Preg real [0.0, 17.0]
+@attribute Plas real [0.0, 199.0]
+@attribute Pres real [0.0, 122.0]
+@attribute Skin real [0.0, 99.0]
+@attribute Insu real [0.0, 846.0]
+@attribute Mass real [0.0, 67.1]
+@attribute Pedi real [0.078, 2.42]
+@attribute Age real [21.0, 81.0]
+@attribute Class {tested_negative, tested_positive}
+@inputs Preg, Plas, Pres, Skin, Insu, Mass, Pedi, Age
+@outputs Class

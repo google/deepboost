@@ -1,0 +1,79 @@
+Sonar, Mines vs. Rocks data set
+
+1: Description.
+
+This data set contains signals obtained from a variety of different aspect angles, spanning 90 degrees for mines and 180 degrees for rocks. Each pattern is a set of 60 numbers in the range 0.0 to 1.0, where each number represents the energy within a particular frequency band, integrated over a certain period of time. The output attribute contains the letter "R" if the object is a rock and "M" if it is a mine (metal cylinder).
+
+2: Type.			Classification	
+3: Origin.			Real world
+4: Instances.		208
+5: Features.		60
+6: Classes.			2	
+7: Missing values.	No
+
+8: Header.
+
+@relation sonar
+@attribute Band1 real[0.0020,0.137]
+@attribute Band2 real[0.0010,0.234]
+@attribute Band3 real[0.0020,0.306]
+@attribute Band4 real[0.0060,0.426]
+@attribute Band5 real[0.0070,0.401]
+@attribute Band6 real[0.01,0.382]
+@attribute Band7 real[0.0030,0.373]
+@attribute Band8 real[0.0060,0.459]
+@attribute Band9 real[0.0080,0.683]
+@attribute Band10 real[0.011,0.711]
+@attribute Band11 real[0.029,0.734]
+@attribute Band12 real[0.024,0.706]
+@attribute Band13 real[0.018,0.713]
+@attribute Band14 real[0.027,0.997]
+@attribute Band15 real[0.0030,1.0]
+@attribute Band16 real[0.016,0.999]
+@attribute Band17 real[0.035,1.0]
+@attribute Band18 real[0.038,1.0]
+@attribute Band19 real[0.049,1.0]
+@attribute Band20 real[0.066,1.0]
+@attribute Band21 real[0.051,1.0]
+@attribute Band22 real[0.022,1.0]
+@attribute Band23 real[0.056,1.0]
+@attribute Band24 real[0.024,1.0]
+@attribute Band25 real[0.024,1.0]
+@attribute Band26 real[0.092,1.0]
+@attribute Band27 real[0.048,1.0]
+@attribute Band28 real[0.028,1.0]
+@attribute Band29 real[0.014,1.0]
+@attribute Band30 real[0.061,1.0]
+@attribute Band31 real[0.048,0.966]
+@attribute Band32 real[0.04,0.931]
+@attribute Band33 real[0.048,1.0]
+@attribute Band34 real[0.021,0.965]
+@attribute Band35 real[0.022,1.0]
+@attribute Band36 real[0.0080,1.0]
+@attribute Band37 real[0.035,0.95]
+@attribute Band38 real[0.038,1.0]
+@attribute Band39 real[0.037,0.986]
+@attribute Band40 real[0.012,0.93]
+@attribute Band41 real[0.036,0.9]
+@attribute Band42 real[0.0060,0.825]
+@attribute Band43 real[0.0,0.773]
+@attribute Band44 real[0.0,0.776]
+@attribute Band45 real[0.0,0.703]
+@attribute Band46 real[0.0,0.729]
+@attribute Band47 real[0.0,0.552]
+@attribute Band48 real[0.0,0.334]
+@attribute Band49 real[0.0,0.198]
+@attribute Band50 real[0.0,0.082]
+@attribute Band51 real[0.0,0.1]
+@attribute Band52 real[0.0010,0.071]
+@attribute Band53 real[0.0,0.039]
+@attribute Band54 real[0.0010,0.035]
+@attribute Band55 real[0.0010,0.045]
+@attribute Band56 real[0.0,0.039]
+@attribute Band57 real[0.0,0.036]
+@attribute Band58 real[0.0,0.044]
+@attribute Band59 real[0.0,0.036]
+@attribute Band60 real[0.0010,0.044]
+@attribute Type{R,M}
+@inputs Band1, Band2, Band3, Band4, Band5, Band6, Band7, Band8, Band9, Band10, Band11, Band12, Band13, Band14, Band15, Band16, Band17, Band18, Band19, Band20, Band21, Band22, Band23, Band24, Band25, Band26, Band27, Band28, Band29, Band30, Band31, Band32, Band33, Band34, Band35, Band36, Band37, Band38, Band39, Band40, Band41, Band42, Band43, Band44, Band45, Band46, Band47, Band48, Band49, Band50, Band51, Band52, Band53, Band54, Band55, Band56, Band57, Band58, Band59, Band60
+@outputs Type
