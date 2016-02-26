@@ -1,0 +1,34 @@
+# SET up - move to config
+PKGROOT = ./
+ENABLE_STD_THREAD = 0
+
+.PHONY: all dpblib
+all: $(SHLIB)
+$(SHLIB): dpblib
+dpblib:
+	cp -r ../../src .
+
+#GIT_DIR = /Users/dmarcous/git/
+
+#PKG_ROOT = $(GIT_DIR)deepboost/
+#ORIG_SOURCES = $(PKG_ROOT)src/
+ORIG_SOURCES = $(PKG_ROOT)
+PKG_CPPFLAGS = -I. -I../inst/include #-I$(ORIG_SOURCES)
+
+#glibs
+GFLAGS_LIB = -lgflags
+GLOG_LIB = -lglog
+
+# require c++11
+CXX_STD = CXX11
+PKG_CXXFLAGS = $(GFLAGS_LIB) $(GLOG_LIB) -std=c++0x
+PKG_LIBS = $(GFLAGS_LIB) $(GLOG_LIB)
+
+OBJECTS = $(ORIG_SOURCES)tree.o $(ORIG_SOURCES)boost.o ./deepboost_C.o ./deepboost_converters.o ./deepboost_R.o ./RcppExports.o
+
+all : deepboost.so
+
+deepboost.so: $(OBJECTS)
+
+clean:
+		rm -rf *.o $(PKG_ROOT)src/*.o
