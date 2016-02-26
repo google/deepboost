@@ -1,28 +1,32 @@
-setwd('D:/MSC/Learnig algorithms for information systems/project')
 library(caret)
 library(ada)
 library(deepboost)
 
+#setwd('D:/MSC/Learnig algorithms for information systems/project')
+setwd('/Users/dmarcous/git/deepboost/R-package/tests')
+
+datadir <- "./datasets/"
+
 # read datasets
-adult <- read.csv('Data sets/adult.data')
+adult <- read.csv(paste0(datadir,"adult.data"))
 # X..50K ~ X39 + X77516 + X13 + X2174 +  X0 + X40
-aust <- read.csv('Data sets/australian.dat')
+aust <- read.csv(paste0(datadir,"australian.dat"))
 # X0.3 ~ .
-banana <- read.csv('Data sets/banana.dat')
+banana <- read.csv(paste0(datadir,"banana.dat"))
 # X.1.0 ~ .
-bupa <- read.csv('Data sets/bupa.dat')
+bupa <- read.csv(paste0(datadir,"bupa.dat"))
 # X1 ~ .
-coli <- read.csv('Data sets/coil2000.dat')
+coli <- read.csv(paste0(datadir,"coil2000.dat"))
 # X0.45 ~ .
-haber <- read.csv('Data sets/haberman.dat')
+haber <- read.csv(paste0(datadir,"haberman.dat"))
 # negative ~ .
-heart <- read.csv('Data sets/heart.dat')
+heart <- read.csv(paste0(datadir,"heart.dat"))
 # X2.2 ~ .
-magic <- read.csv('Data sets/magic.dat')
+magic <- read.csv(paste0(datadir,"magic.dat"))
 # g ~ .
-pima <- read.csv('Data sets/pima.dat')
+pima <- read.csv(paste0(datadir,"pima.dat"))
 # tested_positive ~ .
-sonar <- read.csv('Data sets/sonar.dat')
+sonar <- read.csv(paste0(datadir,"sonar.dat"))
 # R ~ .
 
 # create lists of datasets and formulas
@@ -61,18 +65,18 @@ for(num_iter in c(5,10,15,20)){
       for(k in 1:10){
         train <- ds[-flds[[k]],]
         test <- ds[flds[[k]],]
-        
+
         # train models and calculate accurcy
         t <- Sys.time()
         ab_model <- ada(formula, train, iter = num_iter)
         ada_acc[j] <- ada_acc[j] + sum(predict(ab_model, test) == test[,length(test)]) / nrow(test)
         ada_t <- ada_t + round(difftime(Sys.time(), t, units = "secs"), 2)
-        
+
         t <- Sys.time()
-        #db_model <- deepboost.formula(formula, ds, num_iter = num_iter)
-        #deep_acc[j] <- deep_acc[j] + sum(predict(db_model, test) == test[,length(test)]) / nrow(test)
+        db_model <- deepboost.formula(formula, ds, num_iter = num_iter)
+        deep_acc[j] <- deep_acc[j] + sum(predict(db_model, test) == test[,length(test)]) / nrow(test)
         deep_t <- deep_t + round(difftime(Sys.time(), t, units = "secs"), 2)
-        
+
       }
       ada_acc[j] <- ada_acc[j]/10.0
       deep_acc[j] <- deep_acc[j]/10.0
@@ -88,7 +92,7 @@ for(num_iter in c(5,10,15,20)){
     #deep_auc_sd <- sd(deep_auc)
     acc_t_test <- t.test(ada_acc, deep_acc, paired=TRUE)$p.value < 0.05
     #auc_t_test <- t.test(ada_auc, deep_auc, paired=TRUE)$p.value < 0.05
-    
+
     # print to file
     fname <- paste('Results/', names(datasets)[i], num_iter, ".res", sep='')
     res <- data.frame(dataset = names(datasets)[i], ensemble_size = num_iter, ada_acc = ada_acc_mean,
