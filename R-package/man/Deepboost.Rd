@@ -4,16 +4,28 @@
 \alias{deepboost}
 \title{Main function for deepboost model creation}
 \usage{
-deepboost(formula, data, ...)
+deepboost(formula, data, instance_weights = NULL, tree_depth = 5,
+  num_iter = 1, beta = 0, lambda = 0.05, loss_type = "l",
+  verbose = TRUE)
 }
 \arguments{
 \item{formula}{A R Formula object see : ?formula}
 
 \item{data}{A data.frame of samples to train on}
 
-\item{weights}{The weight of each example}
+\item{instance_weights}{The weight of each example}
 
-\item{controls}{parameters}
+\item{tree_depth}{maximum depth for a single decision tree in the model}
+
+\item{num_iter}{number of iterations = number of trees in ensemble}
+
+\item{beta}{regularisation for scores (L1)}
+
+\item{lambda}{regularisation for tree depth}
+
+\item{loss_type}{- "l" logistic, "e" exponential}
+
+\item{verbose}{- print extra data while training TRUE / FALSE}
 }
 \value{
 A trained Deepbost model

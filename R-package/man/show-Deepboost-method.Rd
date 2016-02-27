@@ -3,15 +3,22 @@
 \docType{methods}
 \name{show,Deepboost-method}
 \alias{show,Deepboost-method}
-\title{Print method for Deepboost model}
+\title{Print method for Deepboost model
+Evaluates a trained deepboost model object.}
 \usage{
 \S4method{show}{Deepboost}(object)
 }
+\arguments{
+\item{object}{Object of class "Deepboost"}
+}
 \description{
+Print method for Deepboost model
 Evaluates a trained deepboost model object.
 }
 \details{
-Evalutes a Deepboost model object.
-Prints : bla \code{error}
+Prints :
+Model error: X"
+Average tree size: Y"
+Number of trees: Z"
 }
 

@@ -7,11 +7,14 @@ Author: Daniel Marcous & Yotam Sandbank
 Maintainer: Daniel Marcous <dmarcous@gmail.com>
 Description: Creation of deep oosting models using deep decision trees (vs shallow trees)
              using a specialised learned weighting function on trees based on their performance as well as their depth.
-License: Apache License, Version 2.0
+License: Apache License (== 2.0)
 LazyData: TRUE
+Suggests:
+    testthat
 Depends:
     R (>= 3.1)
 Imports:
-    Rcpp (>= 0.12.2)
+    Rcpp (>= 0.12.2),
+    methods
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1

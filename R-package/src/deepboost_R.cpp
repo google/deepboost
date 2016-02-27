@@ -1,6 +1,6 @@
 #include <Rcpp.h>
 #include "types.h"
-#include "deepboost_converters.hpp"
+#include "deepboost_converters.h"
 #include "deepboost_C.h"
 
 using namespace Rcpp;

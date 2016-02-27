@@ -9,7 +9,7 @@ deepboost.evaluate(object, data)
 \arguments{
 \item{object}{A Deepboost S4 class object}
 
-\item{a}{\code{data.frame} object to evaluate with the model}
+\item{data}{a \code{data.frame} object to evaluate with the model}
 }
 \value{
 a list with model statistics - error, avg_tree_size, num_trees

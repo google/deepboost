@@ -10,14 +10,22 @@ An S4 class to represent a deepboost model.
 \section{Slots}{
 
 \describe{
-\item{\code{lambda}}{parameter something}
+\item{\code{tree_depth}}{maximum depth for a single decision tree in the model}
 
-\item{\code{train}}{deepboost model training function}
+\item{\code{num_iter}}{number of iterations = number of trees in ensemble}
 
-\item{\code{predict}}{deepboost model instance prediction function}
+\item{\code{beta}}{regularisation for scores (L1)}
 
-\item{\code{print}}{deepboost model evaluation statistics function}
+\item{\code{lambda}}{regularisation for tree depth}
 
-\item{\code{error}}{deepboost model training error}
+\item{\code{loss_type}}{"l" logistic, "e" exponential}
+
+\item{\code{verbose}}{print extra data while training TRUE / FALSE}
+
+\item{\code{examples}}{data.frame with instances used for model training}
+
+\item{\code{model}}{Deepboost model as used by C code serialised to R List}
+
+\item{\code{classes}}{a vector of factors representing the classes used for classification with this model}
 }}
 

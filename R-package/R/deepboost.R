@@ -1,14 +1,19 @@
 #' @useDynLib deepboost
 #' @importFrom Rcpp evalCpp
+#' @import methods
 NULL
 
 #' An S4 class to represent a deepboost model.
 #'
-#' @slot lambda parameter something
-#' @slot train deepboost model training function
-#' @slot predict deepboost model instance prediction function
-#' @slot print deepboost model evaluation statistics function
-#' @slot error deepboost model training error
+#' @slot tree_depth maximum depth for a single decision tree in the model
+#' @slot num_iter number of iterations = number of trees in ensemble
+#' @slot beta regularisation for scores (L1)
+#' @slot lambda regularisation for tree depth
+#' @slot loss_type "l" logistic, "e" exponential
+#' @slot verbose print extra data while training TRUE / FALSE
+#' @slot examples data.frame with instances used for model training
+#' @slot model Deepboost model as used by C code serialised to R List
+#' @slot classes a vector of factors representing the classes used for classification with this model
 setClass("Deepboost",
          slots = list(
            tree_depth = "numeric",
@@ -19,25 +24,23 @@ setClass("Deepboost",
            verbose = "logical",
            examples = "data.frame",
            model = "list",
-           classes = "character",
-           error = "numeric"
+           classes = "character"
          ))
 
 #' Trains a deepboost model
 #'
 #' @param object A Deepboost S4 class object
-#’ @param data input data.frame as training for model
-#’ @param tree_depth maximum depth for a single decision tree in the model
-#’ @param num_iter number of iterations = number of trees in ensemble
-#’ @param beta regularisation for scores (L1)
-#’ @param lambda regularisation for tree depth
-#’ @param loss_type - "l" logistic, "e" exponential
-#’ @param verbose - print extra data while training TRUE / FALSE
+#' @param data input data.frame as training for model
+#' @param tree_depth maximum depth for a single decision tree in the model
+#' @param num_iter number of iterations = number of trees in ensemble
+#' @param beta regularisation for scores (L1)
+#' @param lambda regularisation for tree depth
+#' @param loss_type - "l" logistic, "e" exponential
+#' @param verbose - print extra data while training TRUE / FALSE
+#' @param classes a vector of factors representing the classes used for classification with this model
 #' @details (beta,lambda) = (0,0) - adaboost, (>0,0) - L1, (0,>0) deepboost, (>0, >0) deepbost+L1
 #' @return A trained Deepbost model
 #' @export
-#setMethod("train", signature = "deepboost.train",
-#definition =
 deepboost.train <- function(object, data,
                             tree_depth,
                             num_iter,
@@ -115,6 +118,7 @@ deepboost.predict <- function(object, newdata) {
   labels <-
     Predict_R(newdata,
                object@model)
+
   labels <- unlist(labels)
   labels[labels==1] <- object@classes[1]
   labels[labels==-1] <- object@classes[2]
@@ -137,7 +141,7 @@ deepboost.print <- function(object) {
 #' Evaluates and prints statistics for a deepboost model
 #'
 #' @param object A Deepboost S4 class object
-#' @param a \code{data.frame} object to evaluate with the model
+#' @param data a \code{data.frame} object to evaluate with the model
 #' @return a list with model statistics - error, avg_tree_size, num_trees
 #' @export
 deepboost.evaluate <- function(object, data) {
@@ -157,11 +161,16 @@ Deepboost <- new("Deepboost",
 #'
 #' @param x A data.frame of samples' values
 #' @param y A data.frame of samples's labels
-#' @param weights The weight of each example
-#' @param controls parameters
+#' @param instance_weights The weight of each example
+#' @param tree_depth maximum depth for a single decision tree in the model
+#' @param num_iter number of iterations = number of trees in ensemble
+#' @param beta regularisation for scores (L1)
+#' @param lambda regularisation for tree depth
+#' @param loss_type - "l" logistic, "e" exponential
+#' @param verbose - print extra data while training TRUE / FALSE
 #' @return A trained Deepbost model
 #' @export
-deepboost.default <- function(x, y, weights = NULL,
+deepboost.default <- function(x, y, instance_weights = NULL,
                               tree_depth = 5,
                               num_iter = 1,
                               beta = 0.0,
@@ -170,10 +179,10 @@ deepboost.default <- function(x, y, weights = NULL,
                               verbose = TRUE
                               ) {
   # initialize weights
-  n <- dim(x)[1]
-  if(is.null(weights))
+  n <- nrow(x)
+  if(is.null(instance_weights))
   {
-    weights <- rep(1/n, n)
+    instance_weights <- rep(1/n, n)
   }
   # make response either 1 or -1
   y <- factor(y)
@@ -186,9 +195,8 @@ deepboost.default <- function(x, y, weights = NULL,
   # create data
   data <- data.frame(x)
   data['label'] <- y
-  data['weight'] <- weights
+  data['weight'] <- instance_weights
 
-  print("training deepboost model")
   fit <- deepboost.train(Deepboost, data,
                          tree_depth,
                          num_iter,
@@ -197,7 +205,6 @@ deepboost.default <- function(x, y, weights = NULL,
                          loss_type,
                          verbose,
                          classes)
-  print("evaluating deepboost model")
   deepboost.print(fit)
 
   return (fit)
@@ -207,24 +214,47 @@ deepboost.default <- function(x, y, weights = NULL,
 #'
 #' @param formula A R Formula object see : ?formula
 #' @param data A data.frame of samples to train on
-#' @param weights The weight of each example
-#' @param controls parameters
+#' @param instance_weights The weight of each example
+#' @param tree_depth maximum depth for a single decision tree in the model
+#' @param num_iter number of iterations = number of trees in ensemble
+#' @param beta regularisation for scores (L1)
+#' @param lambda regularisation for tree depth
+#' @param loss_type - "l" logistic, "e" exponential
+#' @param verbose - print extra data while training TRUE / FALSE
 #' @return A trained Deepbost model
 #' @export
-deepboost <- function(formula, data, ...) {
-  deepboost.formula(formula, data, ...)
+deepboost <- function(formula, data,
+                      instance_weights = NULL,
+                      tree_depth = 5,
+                      num_iter = 1,
+                      beta = 0.0,
+                      lambda= 0.05,
+                      loss_type = "l",
+                      verbose = TRUE) {
+  deepboost.formula(formula, data,
+                    instance_weights,
+                    tree_depth,
+                    num_iter,
+                    beta,
+                    lambda,
+                    loss_type,
+                    verbose)
 }
-
 
 #' Main function for deepboost model creation, using a formula
 #'
 #' @param formula A R Formula object see : ?formula
 #' @param data A data.frame of samples to train on
-#' @param weights The weight of each example
-#' @param controls parameters
+#' @param instance_weights The weight of each example
+#' @param tree_depth maximum depth for a single decision tree in the model
+#' @param num_iter number of iterations = number of trees in ensemble
+#' @param beta regularisation for scores (L1)
+#' @param lambda regularisation for tree depth
+#' @param loss_type - "l" logistic, "e" exponential
+#' @param verbose - print extra data while training TRUE / FALSE
 #' @return A trained Deepbost model
 #' @export
-deepboost.formula <- function(formula, data, weights = NULL,
+deepboost.formula <- function(formula, data, instance_weights = NULL,
                               tree_depth = 5,
                               num_iter = 1,
                               beta = 0.0,
@@ -232,10 +262,10 @@ deepboost.formula <- function(formula, data, weights = NULL,
                               loss_type = "l",
                               verbose = TRUE) {
   # initialize weights
-  n <- dim(data)[1]
-  if(is.null(weights))
+  n <- nrow(data)
+  if(is.null(instance_weights))
   {
-    weights <- rep(1/n, n)
+    instance_weights <- rep(1/n, n)
   }
   # parse formula
   cl <- match.call()
@@ -258,9 +288,8 @@ deepboost.formula <- function(formula, data, weights = NULL,
   # create data
   data <- data.frame(x[,-1])
   data['label'] <- y
-  data['weight'] <- weights
+  data['weight'] <- instance_weights
 
-  print("training deepboost model")
   fit <- deepboost.train(Deepboost, data,
                          tree_depth,
                          num_iter,
@@ -269,7 +298,6 @@ deepboost.formula <- function(formula, data, weights = NULL,
                          loss_type,
                          verbose,
                          classes)
-  print("evaluating deepboost model")
   deepboost.print(fit)
 
   return (fit)
@@ -293,12 +321,15 @@ setMethod("predict", signature = "Deepboost",
 })
 
 #' Print method for Deepboost model
-#'
 #' Evaluates a trained deepboost model object.
 #'
+#' @param object Object of class "Deepboost"
+#'
 #' @details
-#' Evalutes a Deepboost model object.
-#' Prints : bla \code{error}
+#' Prints :
+#' Model error: X"
+#' Average tree size: Y"
+#' Number of trees: Z"
 #' @export
 setMethod("show", signature = "Deepboost",
           definition = function(object) {

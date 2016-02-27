@@ -5,6 +5,7 @@ Daniel Marcous, Yotam Sandbank
 
 #include <float.h>
 #include <math.h>
+#include <string>
 
 #include "gflags/gflags.h"
 #include "glog/logging.h"
@@ -12,6 +13,10 @@ Daniel Marcous, Yotam Sandbank
 #include "deepboost_C.h"
 #include "boost.h"
 #include "tree.h"
+
+#include <Rcpp.h>
+
+using namespace Rcpp;
 
 DECLARE_int32(tree_depth);
 DECLARE_double(beta);
@@ -22,9 +27,6 @@ DECLARE_string(loss_type);
 // numIter iterations (which not necessarily means numIter trees)
 void Train(vector<Example>* train_examples, Model* model, int tree_depth,
  int num_iter, double beta, double lambda, char loss_type, bool verbose) {
-
-  // Initialize tree data for training
-  InitializeTreeData(*train_examples, (*train_examples).size());
 
 	// Set flags
 	FLAGS_tree_depth = tree_depth;
@@ -43,9 +45,11 @@ void Train(vector<Example>* train_examples, Model* model, int tree_depth,
 			int num_trees;
 			EvaluateModel(*train_examples, *model, &error, &avg_tree_size,
 						  &num_trees);
-			printf("Iteration: %d, error: %g, "
-				   "avg tree size: %g, num trees: %d\n",
-				   iter, error, avg_tree_size, num_trees);
+			Rcpp::Rcout << "Iteration: " << std::to_string(iter)
+			            << ", error: " << std::to_string(error)
+			            << ", avg tree size: " << std::to_string(avg_tree_size)
+			            << ", num trees: " << std::to_string(num_trees)
+			            << std::endl;
 		}
 	}
 }

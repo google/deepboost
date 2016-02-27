@@ -1,7 +1,11 @@
+//#include <sstream>
+//#include <cereal/archives/binary.hpp>
 #include <Rcpp.h>
 #include "types.h"
-#include "deepboost_converters.hpp"
+#include "deepboost_converters.h"
 #include "deepboost_C.h"
+
+// [[Rcpp::plugins("cpp11")]]
 
 using namespace Rcpp;
 
@@ -9,7 +13,7 @@ vector<Example> createExampleVectorFromDataFrame(DataFrame data)
 {
     vector<Example> examples;
     int example_number = data.nrows();
-    NumericVector labels;
+    StringVector labels;
     NumericVector weights;
     bool labelsExist=false;
     bool weightsExist=false;
@@ -38,15 +42,20 @@ vector<Example> createExampleVectorFromDataFrame(DataFrame data)
 
       if (labelsExist)
       {
-        example -> label = labels[i];
-      }
-      if(weightsExist)
-      {
-        example -> weight = labels[i];
+        example -> label = std::stoi(as<std::string>(labels[i]));
       }
       else
       {
-        example -> weight = DEFAULT_WEIGHT;
+        example -> label = (int)NULL;
+      }
+
+      if(weightsExist)
+      {
+        example -> weight = weights[i];
+      }
+      else
+      {
+        example -> weight = 1.0/example_number;
       }
       example -> values = vector<Value>();
 
@@ -65,28 +74,67 @@ vector<Example> createExampleVectorFromDataFrame(DataFrame data)
     return examples;
 }
 
+// struct Serialisable_Example : Example {
+//   Serialisable_Example(Example ex_){
+//     values = ex_.values;
+//     label = ex_.label;
+//     weight = ex_.weight;
+//   }
+//
+//   // This method lets cereal know which data members to serialize
+//   template<class Archive>
+//   void serialize(Archive & archive) {
+//     archive( values, label, weight ); // serialize things by passing them to the archive
+//   }
+// } ;
+//
+// struct Serialisable_Node : Node {
+//   Serialisable_Node(Node nd_){
+//     split_feature = nd_.split_feature;
+//     split_value = nd_.split_value;
+//     left_child_id = nd_.left_child_id;
+//     right_child_id = nd_.right_child_id;
+//     positive_weight = nd_.positive_weight;
+//     negative_weight = nd_.negative_weight;
+//     leaf = nd_.leaf;
+//     depth = nd_.depth;
+//   }
+//   vector<Example> examples;  // Examples at this node.
+// };
+//
+// RawVector serialize_model(vector<Example> exx_) {
+//   //vector<Serialisable_Example> vExR = exx_;
+//   std::stringstream ss;
+//   {
+//     cereal::BinaryOutputArchive oarchive(ss); // Create an output archive
+//     oarchive(exx_);
+//   }
+//   ss.seekg(0, ss.end);
+//   RawVector retval(ss.tellg());
+//   ss.seekg(0, ss.beg);
+//   ss.read(reinterpret_cast<char*>(&retval[0]), retval.size());
+//   return retval;
+// }
+
 Rcpp::List modelToList(Model model_)
 {
   List model = List();
-
   for (pair<Weight, Tree> pair_: model_) {
     vector<Node> tree_ = pair_.second;
     List nodes = List::create();
-
     for(Node node_: tree_) {
       vector<Example> examples_ = node_.examples;
       List examples = List::create();
-
-      for(Example example_: examples_){
-        examples.push_back(
-          List::create(
-            Named("values",example_.values),
-            Named("label",example_.label),
-            Named("weight",example_.weight)
-          )
-        );
-      }
-
+//       TODO : check without initializing values
+//       for(Example example_: examples_){
+//         examples.push_back(
+//           List::create(
+//             Named("values",example_.values),
+//             Named("label",example_.label),
+//             Named("weight",example_.weight)
+//           )
+//         );
+//       }
       nodes.push_back(
           List::create(
                       Named("examples",examples),
@@ -101,7 +149,6 @@ Rcpp::List modelToList(Model model_)
                       )
                       );
     }
-
     model.push_back(
       List::create(
         Named("tree_weight",pair_.first),
@@ -132,19 +179,20 @@ Model listToModel(Rcpp::List model_)
       int depth = Rcpp::as<int>(node_["depth"]);
 
       vector<Example> examples;
-      for (List example_ : examples_){
-        vector<Value> values = Rcpp::as<vector<Value>>(example_["values"]);
-        Label label = Rcpp::as<Label>(example_["label"]);
-        Weight weight = Rcpp::as<Weight>(example_["weight"]);
-
-        Example *example = new Example;
-
-        example -> values = values;
-        example -> label = label;
-        example -> weight = weight;
-
-        examples.push_back(*example);
-    }
+      // TODO : check with empty example vector
+//       for (List example_ : examples_){
+//         vector<Value> values = Rcpp::as<vector<Value>>(example_["values"]);
+//         Label label = Rcpp::as<Label>(example_["label"]);
+//         Weight weight = Rcpp::as<Weight>(example_["weight"]);
+//
+//         Example *example = new Example;
+//
+//         example -> values = values;
+//         example -> label = label;
+//         example -> weight = weight;
+//
+//         examples.push_back(*example);
+//     }
 
       Node *node = new Node;
 
@@ -174,7 +222,6 @@ Rcpp::List Train_C(DataFrame data,
                         bool verbose)
 {
   vector<Example> train_examples = createExampleVectorFromDataFrame(data);
-
   Model model_;
 
   Train(&train_examples,

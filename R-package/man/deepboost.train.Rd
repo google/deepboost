@@ -9,6 +9,22 @@ deepboost.train(object, data, tree_depth, num_iter, beta, lambda, loss_type,
 }
 \arguments{
 \item{object}{A Deepboost S4 class object}
+
+\item{data}{input data.frame as training for model}
+
+\item{tree_depth}{maximum depth for a single decision tree in the model}
+
+\item{num_iter}{number of iterations = number of trees in ensemble}
+
+\item{beta}{regularisation for scores (L1)}
+
+\item{lambda}{regularisation for tree depth}
+
+\item{loss_type}{- "l" logistic, "e" exponential}
+
+\item{verbose}{- print extra data while training TRUE / FALSE}
+
+\item{classes}{a vector of factors representing the classes used for classification with this model}
 }
 \value{
 A trained Deepbost model
