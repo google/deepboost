@@ -11,10 +11,11 @@
 #   LIB_DIR/include/gtest contains Google Test include files
 #   LIB_DIR/src contains Google Test source files
 #   LIB_DIR/lib contains libgflags* and libglog* library files.
-LIB_DIR = /usr/local/google/home/usyed/googleopensource
+#LIB_DIR = /usr/local/google/home/usyed/googleopensource
+LIB_DIR = ../googlecdevtools
 
 # Where to find user code.
-USER_DIR = .
+USER_DIR = ./src
 
 # Flags passed to the preprocessor.
 CPPFLAGS += -isystem $(LIB_DIR)/include
@@ -35,9 +36,9 @@ GTEST_HEADERS = $(LIB_DIR)/include/gtest/*.h \
 # House-keeping build targets.
 
 test: $(TESTS)
-	./tree_test
-	./io_test
-	./boost_test
+	$(USER_DIR)/../tree_test
+	$(USER_DIR)/../io_test
+	$(USER_DIR)/../boost_test
 clean :
 	rm -f $(TESTS) gtest_main.a driver *.o
 
@@ -72,7 +73,7 @@ tree_test.o : $(USER_DIR)/tree_test.cc \
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/tree_test.cc
 
 tree_test : tree.o tree_test.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -static -lpthread $^ -o $@ -L$(LIB_DIR)/lib -lgflags -lglog
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -L$(LIB_DIR)/lib -lgflags -lglog
 
 boost.o : $(USER_DIR)/boost.cc $(USER_DIR)/boost.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/boost.cc
@@ -82,7 +83,7 @@ boost_test.o : $(USER_DIR)/boost_test.cc \
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/boost_test.cc
 
 boost_test : tree.o boost.o boost_test.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -static -lpthread $^ -o $@ -L$(LIB_DIR)/lib -lgflags -lglog
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -L$(LIB_DIR)/lib -lgflags -lglog
 
 io.o : $(USER_DIR)/io.cc $(USER_DIR)/io.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/io.cc
@@ -92,7 +93,7 @@ io_test.o : $(USER_DIR)/io_test.cc \
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/io_test.cc
 
 io_test : tree.o io.o io_test.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -static -lpthread $^ -o $@ -L$(LIB_DIR)/lib -lgflags -lglog
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -L$(LIB_DIR)/lib -lgflags -lglog
 
 # Build the main executable
 
@@ -100,4 +101,4 @@ driver.o : $(USER_DIR)/driver.cc
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/driver.cc
 
 driver : tree.o boost.o io.o driver.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -static -lpthread $^ -o $@ -L$(LIB_DIR)/lib -lgflags -lglog
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -L$(LIB_DIR)/lib -lgflags -lglog

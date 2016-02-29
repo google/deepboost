@@ -1,0 +1,7 @@
+driver -tree_depth = 1 -num_iter = 5 -dataset = "breastcancet" -data_filename = "testdata/breast-cancer-wisconsin.data" -num_folds = 5 -fold_to_cv = 1 -fold_to_test = 1 -seed = 1 -beta = 0.2 -lambda = 0.5 -loss_type = "exponential" -noise_prob = 0.1
+
+driver -tree_depth = 1 -num_iter = 5 -dataset = "australian" -data_filename = "testdata/australian.data" -num_folds = 5 -fold_to_cv = 1 -fold_to_test = 1 -seed = 1 -beta = 0.2 -lambda = 0.5 -loss_type = "exponential" -noise_prob = 0.1
+
+driver -tree_depth = 1 -num_iter = 5 -dataset = "coli" -data_filename = "testdata/coil2000.data" -num_folds = 5 -fold_to_cv = 1 -fold_to_test = 1 -seed = 1 -beta = 0.2 -lambda = 0.5 -loss_type = "exponential" -noise_prob = 0.1
+
+driver -tree_depth = 1 -num_iter = 5 -dataset = "magic" -data_filename = "testdata/magic.data" -num_folds = 5 -fold_to_cv = 1 -fold_to_test = 1 -seed = 1 -beta = 0.2 -lambda = 0.5 -loss_type = "exponential" -noise_prob = 0.1
