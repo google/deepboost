@@ -112,7 +112,7 @@ void AddTreeToModel(vector<Example>& examples, Model* model) {
   for (Example& example : examples) {
     const float u = eta * example.label * ClassifyExample(example, *tree);
     if (FLAGS_loss_type == "exponential") {
-      example.weight *= exp(-u);
+      example.weight = example.weight * exp(-u) * old_normalizer;
     } else if (FLAGS_loss_type == "logistic") {
       const float z = (1 - log(2) * example.weight * old_normalizer) /
                       (log(2) * example.weight * old_normalizer);
